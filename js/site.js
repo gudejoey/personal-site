@@ -12,30 +12,91 @@ const gallery = [
 
 const $ = (s, r = document) => r.querySelector(s);
 
-// viewer (only on pages that have one)
-const dlg = $("#viewer");
+// viewer: one dialog for the whole site, created on first use
+let dlg;
 function openViewer(src, alt) {
+  if (!dlg) {
+    document.body.insertAdjacentHTML("beforeend", `
+      <dialog id="viewer" aria-label="Image viewer">
+        <div class="in"><img id="vimg" alt=""><div class="cap"><button class="x" id="vclose">Close</button></div></div>
+      </dialog>`);
+    dlg = $("#viewer");
+    $("#vclose").addEventListener("click", () => dlg.close());
+    dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+  }
   const vimg = $("#vimg");
   vimg.src = "img/" + src + ".jpg"; vimg.alt = alt;
   if (typeof dlg.showModal === "function") dlg.showModal();
 }
-if (dlg) {
-  $("#vclose").addEventListener("click", () => dlg.close());
-  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+function initCopy(root) {
+  root.querySelectorAll(".copy").forEach(btn => btn.addEventListener("click", async () => {
+    const text = btn.dataset.copy;
+    try { await navigator.clipboard.writeText(text); btn.textContent = "copied"; }
+    catch { const el = btn.parentNode.querySelector(".em"); const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "selected"; }
+    setTimeout(() => btn.textContent = "copy", 1600);
+  }));
 }
 
-const grid = $("#gallery");
-if (grid) {
-  grid.innerHTML = gallery.map((p, i) => `<button type="button" data-i="${i}" aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${p.alt}" loading="lazy"></button>`).join("");
-  grid.addEventListener("click", e => {
-    const b = e.target.closest("button"); if (!b) return;
-    const p = gallery[+b.dataset.i]; openViewer(p.src, p.alt);
-  });
+// everything inside <main>; runs on first load and after every in-place navigation
+function initMain() {
+  const main = $("main");
+  const grid = $("#gallery", main);
+  if (grid) {
+    grid.innerHTML = gallery.map((p, i) => `<button type="button" data-i="${i}" aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${p.alt}" loading="lazy"></button>`).join("");
+    grid.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      const p = gallery[+b.dataset.i]; openViewer(p.src, p.alt);
+    });
+  }
+  initCopy(main);
+}
+initMain();
+initCopy($("footer.site"));
+
+/* In-place navigation: fetch the next page and swap only <main>, so the header, fonts and
+   favicon are never reloaded. Falls back to a normal page load if anything goes wrong
+   (including opening the files straight from disk, where fetch is blocked). */
+const cache = new Map();
+const isPage = a => a && a.origin === location.origin && /\.html$/.test(a.pathname) && !a.target && !a.hasAttribute("download");
+const load = url => {
+  if (!cache.has(url)) cache.set(url, fetch(url).then(r => { if (!r.ok) throw r.status; return r.text(); }).catch(e => { cache.delete(url); throw e; }));
+  return cache.get(url);
+};
+
+// start fetching as soon as the pointer reaches a link
+const warm = e => { const a = e.target.closest?.("a"); if (isPage(a)) load(a.href).catch(() => {}); };
+document.addEventListener("pointerover", warm);
+document.addEventListener("touchstart", warm, { passive: true });
+
+async function go(url, push) {
+  let html;
+  try { html = await load(url); } catch { location.href = url; return; }
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const next = $("main", doc);
+  if (!next) { location.href = url; return; }
+  const swap = () => {
+    $("main").replaceWith(document.adoptNode(next));
+    document.title = doc.title;
+    const navNext = [...doc.querySelectorAll("nav.site a")].map(a => a.hasAttribute("aria-current"));
+    document.querySelectorAll("nav.site a").forEach((a, i) => navNext[i] ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    if (push) history.pushState({}, "", url);
+    window.scrollTo(0, 0);
+    initMain();
+  };
+  if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // the browser skips the animation (but still swaps) when e.g. the tab is hidden; that's fine
+    const t = document.startViewTransition(swap);
+    [t.ready, t.finished, t.updateCallbackDone].forEach(p => p.catch(() => {}));
+  } else swap();
 }
 
-document.querySelectorAll(".copy").forEach(btn => btn.addEventListener("click", async () => {
-  const text = btn.dataset.copy;
-  try { await navigator.clipboard.writeText(text); btn.textContent = "copied"; }
-  catch { const el = btn.parentNode.querySelector(".em"); const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "selected"; }
-  setTimeout(() => btn.textContent = "copy", 1600);
-}));
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest("a");
+  if (!isPage(a)) return;
+  e.preventDefault();
+  if (a.href === location.href) return;
+  go(a.href, true);
+});
+window.addEventListener("popstate", () => go(location.href, false));

@@ -8,10 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;1,400&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="css/style.css">
-<script type="speculationrules">
-{ "prerender": [{ "where": { "href_matches": "*.html", "relative_to": "document" }, "eagerness": "moderate" }] }
-</script>
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 <div class="wrap">
@@ -35,25 +32,20 @@
 
   <main>
   <section>
-    <h2 class="ptitle" style="margin-top:0">About</h2>
     <div class="about">
       <div class="prose">
+        <h2 class="ptitle">About</h2>
+        <p>I'm a first-year at Stanford studying computer science.</p>
+        <p>In high school, most of my free time went into visual work: projections for school theater, posters, photos, and one 3D-printed helmet. I also competed in programming contests, and started and ran a nonprofit that taught robotics to younger students.</p>
+        <p>I interned at an AI startup, working on agent workflows, evaluation, and a serverless state machine engine.</p>
+        <p>Currently learning drums.</p>
         <figure class="portrait">
           <img src="svg/FullBody.svg" alt="Hand-drawn cartoon mouse standing upright: a drawing of Jerry">
           <figcaption>
             <svg class="arrow" viewBox="0 0 64 40" aria-hidden="true"><path d="M60 8 C 44 2, 20 6, 6 30" /><path d="M2 22 L6 31 L15 27" /></svg>
-            <span>this is me, drawn by one of my robotics students</span>
+            <span> a drawing of me by a student of mine</span>
           </figcaption>
         </figure>
-        <p>I'm a first-year at Stanford studying computer science.</p>
-        <p>In high school most of my free time went into visual work: projections for school theater, posters, photos, and one 3D-printed helmet. I also competed in programming contests, and started and ran a nonprofit that taught robotics to younger students.</p>
-        <p>Before college I interned at an AI startup, working on agent workflows, evaluation, and a serverless state machine engine. I'm interested in machine learning applied to other fields, digital media, and good math problems.</p>
-        <p>Currently learning drums.</p>
-        <div class="contact" id="contact">
-          <span class="mono muted">Contact</span>
-          <span><span class="em">jerryjyu@stanford.edu</span> <button class="copy" data-copy="jerryjyu@stanford.edu">copy</button></span>
-          <span><a href="#">LinkedIn</a> · <a href="#">GitHub</a> · <a href="#">Resume (PDF)</a> <span class="fill">add links</span></span>
-        </div>
       </div>
       <div style="min-width:0; overflow-x:auto">
         <table class="idx">
@@ -84,6 +76,6 @@
   </footer>
 </div>
 
-<script src="js/site.js"></script>
+<script src="js/site.js?v=8"></script>
 </body>
 </html>
