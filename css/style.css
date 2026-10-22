@@ -45,7 +45,29 @@ nav.site { padding-top: 0.2rem; }
 .lockup { display: flex; gap: 16px; align-items: center; }
 .namerow { display: flex; align-items: center; gap: 12px; }
 .mark { flex: none; display: block; }
-.mark img { height: 2.6rem; width: auto; }
+.mark svg { height: 2.6rem; width: auto; aspect-ratio: 120 / 103; display: block; fill: currentColor; overflow: visible; }
+/* the face blinks and its nose twitches now and then; different cycle lengths keep them from syncing up */
+.face .eye { transform-box: fill-box; transform-origin: center; animation: blink 9s infinite; }
+/* pivot sits at the right, where the nose meets the face, so only the tip moves */
+.face .snout { transform-box: fill-box; transform-origin: 84% 25%; animation: twitch 7s 1.5s infinite; }
+.face .snout.poke { animation: poke .5s; }
+@keyframes blink {
+  0%, 39%, 42%, 88%, 90.5%, 92%, 94.5%, 100% { transform: none; }
+  40.5%, 89.3%, 93.3% { transform: scaleY(.1); }
+}
+@keyframes twitch {
+  0%, 60%, 62%, 64.5%, 100% { transform: none; }
+  61% { transform: rotate(5deg); }
+  63.3% { transform: rotate(3.5deg); }
+}
+@keyframes poke {
+  0%, 100% { transform: none; }
+  15% { transform: rotate(6deg); }
+  35% { transform: rotate(-2deg); }
+  55% { transform: rotate(5deg); }
+  75% { transform: rotate(-1deg); }
+}
+@media (prefers-reduced-motion: reduce) { .face .eye, .face .snout, .face .snout.poke { animation: none; } }
 .id { flex: 1; min-width: 0; }
 .name { font-family: var(--serif); font-weight: 400; font-size: clamp(2.1rem, 4.6vw, 3.1rem); line-height: 1; margin: 0; letter-spacing: -0.015em; font-style: italic; }
 .name a { text-decoration: none; }
@@ -132,7 +154,9 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .cue p { margin: 10px 0 0; line-height: 1.5; max-width: 38rem; }
 
 /* about */
-.about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s4); align-items: start; margin-top: var(--s2); }
+.about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s4); margin-top: var(--s2); }
+/* columns stretch to equal height; the drawing floats midway in the space left under the text */
+.about > .prose { display: flex; flex-direction: column; }
 .about .ptitle { margin-top: 0; }
 .idx { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .idx th { text-align: left; font: 500 0.6875rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--graphite); padding: 0 0 8px; border-bottom: 1.5px solid var(--ink); }
@@ -140,8 +164,8 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .idx td:first-child { font-family: var(--mono); font-size: var(--s-1); white-space: nowrap; padding-top: 14px; }
 .idx td:last-child { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); padding-right: 0; padding-top: 14px; white-space: nowrap; }
 .idx .sub { display: block; color: var(--graphite); font-size: 0.875rem; line-height: 1.4; margin-top: 2px; }
-.portrait { margin: var(--s2) 0 var(--s3); display: flex; align-items: flex-start; gap: 4px; }
-.portrait img { width: 150px; height: auto; flex: none; }
+.portrait { margin: var(--s3) var(--s1) auto var(--s1); display: flex; align-items: flex-start; gap: 4px; }
+.portrait img { width: 160px; height: auto; flex: none; }
 .portrait figcaption { margin: 18px 0 0; display: flex; align-items: flex-start; gap: 6px; max-width: 15rem; font: italic 1.0625rem/1.3 var(--serif); color: var(--graphite); }
 .portrait .arrow { flex: none; width: 52px; height: auto; fill: none; stroke: var(--graphite); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; margin-top: 10px; }
 
@@ -170,7 +194,7 @@ dialog button.x { all: unset; cursor: pointer; font-family: var(--mono); font-si
   .tb { grid-template-columns: minmax(0, 1fr); }
   .tb > div, .tb > div.wide { grid-column: auto; border-right: 0 !important; }
   header.site { padding-block: var(--s3) var(--s2); }
-  .mark img { height: 2rem; }
+  .mark svg { height: 2rem; }
   .lockup { gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

@@ -54,6 +54,17 @@ function initMain() {
 initMain();
 initCopy($("footer.site"));
 
+// clicking the face makes the nose twitch (the header survives navigation, so it plays either way)
+const snout = $(".face .snout");
+if (snout) {
+  $(".mark").addEventListener("click", () => {
+    snout.classList.remove("poke");
+    void snout.getBoundingClientRect(); // restart the animation if clicked again mid-twitch
+    snout.classList.add("poke");
+  });
+  snout.addEventListener("animationend", e => { if (e.animationName === "poke") snout.classList.remove("poke"); });
+}
+
 /* In-place navigation: fetch the next page and swap only <main>, so the header, fonts and
    favicon are never reloaded. Falls back to a normal page load if anything goes wrong
    (including opening the files straight from disk, where fetch is blocked). */
