@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jerry Yu</title>
+<link rel="icon" type="image/svg+xml" href="svg/Face.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;1,400&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="lockup">
+      <div class="id">
+        <div class="top">
+          <div class="namerow">
+            <h1 class="name"><a href="index.html">Jerry Yu</a></h1>
+            <a class="mark" href="index.html" aria-hidden="true" tabindex="-1"><img src="svg/Face.svg" alt=""></a>
+          </div>
+          <nav class="site" aria-label="Main">
+            <a href="index.html" aria-current="page">Work</a>
+            <a href="about.html">About</a>
+          </nav>
+        </div>
+        <p class="tag">Exploring technology and arts at Stanford.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+  <section>
+    <div class="sechead" style="margin-top:0"><h2>Projects</h2><span class="mono muted">3</span></div>
+    <div class="projects">
+      <a class="plate stage" href="stage.html">
+        <div class="frame"><img src="img/stage-funnel.jpg" alt="A glowing wireframe funnel projected across a theater's back wall, with a seated performer in front"></div>
+        <div class="label"><span class="pl">Pl. 1</span><span class="t">Stage projections <i>· five productions</i></span>
+          <span class="note">Moving backdrops for high school theater, drawn in Illustrator and animated in After Effects.</span></div>
+      </a>
+      <a class="plate helmet" href="helmet.html">
+        <div class="frame"><img src="img/helmet.jpg" alt="Jerry in a dark suit wearing a silver 3D-printed Daft Punk helmet and gloves on a sidewalk"></div>
+        <div class="label"><span class="pl">Pl. 2</span><span class="t">Daft Punk helmet <i>· build</i></span>
+          <span class="note">3D-printed, filled, sanded and painted. The visor came off a vacuum former we built from plywood.</span></div>
+      </a>
+      <a class="plate p418" href="418am.html">
+        <div class="duo">
+          <div class="frame"><img src="img/merch418.jpg" alt="Black hoodie and t-shirt printed with a pink alarm-clock graphic reading Dreaming since"></div>
+          <div class="frame"><img src="img/lamp418.jpg" alt="Ornate streetlamp glowing at night beside the text 4:18 AM"></div>
+        </div>
+        <div class="label"><span class="pl">Pl. 3</span><span class="t">4:18 AM <i>· apparel, 2024</i></span>
+          <span class="note">A hoodie brand I started with a friend. Two samples made, zero sold.</span></div>
+      </a>
+    </div>
+
+    <div class="sechead"><h2>Posters</h2><span class="mono muted">click to enlarge</span></div>
+    <div class="posters" id="posters"></div>
+
+    <div class="sechead"><h2>Photos</h2><span class="mono muted">click to enlarge</span></div>
+    <div class="strip" id="strip"></div>
+  </section>
+  </main>
+
+  <footer class="site">
+    <span class="mono">Jerry Yu · <span class="muted em">jerryyu333@gmail.com</span> <button class="copy" data-copy="jerryyu333@gmail.com">copy</button></span>
+    <ul class="mono">
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">GitHub</a></li>
+      <li><a href="#">Resume</a></li>
+    </ul>
+  </footer>
+</div>
+
+<dialog id="viewer" aria-label="Image viewer">
+  <div class="in">
+    <img id="vimg" alt="">
+    <div class="cap"><p id="vcap"></p><button class="x" id="vclose">Close</button></div>
+  </div>
+</dialog>
+
+<script src="js/site.js"></script>
+</body>
+</html>
