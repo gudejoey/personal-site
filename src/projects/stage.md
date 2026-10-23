@@ -37,7 +37,7 @@ lede: I designed projected animated backdrops for five high school productions
   <div class="cue">
     <div class="margin"><span>Show</span><b>Grease</b><span>2026</span></div>
     <figure>
-      <img src="img/grease.jpg" alt="Grease poster, set in burger palace">
+      <img src="img/grease.jpg" alt="Grease poster, set in Burger Palace">
       <p>Designed the poster for the musical Grease. Set inside the iconic Burger Palace. Also built and painted set items and acted in ensemble.</p>
     </figure>
   </div>
