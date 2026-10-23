@@ -24,24 +24,24 @@ lede: I designed projected animated backdrops for five high school productions
     <div class="margin"><span>Show</span><b>Dracula</b><span>2025</span></span></div>
     <figure>
       <img src="img/stage-signs.jpg" alt="Handwritten station and shop signs scattered across a dark projected backdrop as actors cross the stage">
-      <p>Station and shop signs in handwriting scattered across the backdrop: Taxis, Cold Drinks, Check In, Way Out. <span class="fill">how it moved</span></p>
+      <p>Station and shop signs in handwriting scattered across the backdrop: Taxis, Cold Drinks, Check In, Way Out.</p>
     </figure>
   </div>
   <div class="cue tall">
-    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
+    <div class="margin"><span>Show</span><b>Noises Off</b><span>2025</span></div>
     <figure>
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
       <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
     </figure>
   </div>
-  <div class="cue tall">
-    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
+  <div class="cue">
+    <div class="margin"><span>Show</span><b>Eurydice</b><span>2026</span></div>
     <figure>
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
       <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
     </figure>
-  </div><div class="cue tall">
-    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
+  </div><div class="cue">
+    <div class="margin"><span>Show</span><b>Mouthwashing</b><span>2026</span></div>
     <figure>
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
       <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
