@@ -35,7 +35,7 @@ lede: I designed projected animated backdrops for five high school productions
       <p>Animated a moving tour route throughout British cities.</p>
     </figure>
   </div>
-  <div class="cue">
+  <div class="cue tall">
     <div class="margin"><span>Show</span><b>Grease</b><span>2026</span></div>
     <figure>
       <img src="img/grease.jpg" alt="Grease poster, set in Burger Palace">
