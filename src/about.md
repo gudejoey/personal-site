@@ -1,11 +1,11 @@
 ---
+heading: About me
+portrait: svg/FullBody.svg
+portrait_alt: Hand-drawn cartoon mouse standing upright
+portrait_caption: a drawing of me by a student
 layout: about.njk
 permalink: about.html
 title: About
-heading: About me
-portrait: svg/FullBody.svg
-portrait_alt: "Hand-drawn cartoon mouse standing upright: a drawing of Jerry"
-portrait_caption: a drawing of me by a student
 ---
 Hi! I'm currently a freshman at Stanford studying computer science.
 
