@@ -121,6 +121,8 @@ footer.site ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px var(
 .lede { font-size: var(--s1); line-height: 1.45; max-width: 40rem; margin: 0 0 var(--s3); text-wrap: pretty; }
 .prose { max-width: 38rem; }
 .prose p { margin: 0 0 0.75rem; line-height: 1.55; }
+/* links inside body text get the highlighter; the hover underline still grows on top */
+.prose p a { background-color: var(--note); padding: 0 3px; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
 .tb { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1.5px solid var(--ink); margin-bottom: var(--s4); }
 .tb > div { border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 8px 12px 10px; min-width: 0; }
