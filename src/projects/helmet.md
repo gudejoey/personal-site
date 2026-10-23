@@ -1,12 +1,15 @@
 ---
-title: Daft Punk helmet
+title: Daft Punk Costume
 card_title: Daft Punk Costume
 order: 2
 cover: img/helmet.jpg
-cover_alt: Man in a dark suit wearing a silver 3D-printed Daft Punk helmet and gloves on a sidewalk
+cover_alt: Man in a dark suit wearing a silver 3D-printed Daft Punk helmet and
+  gloves on a sidewalk
 cover_ratio: 3 / 4
 note: Custom-built helmet for Halloween.
-lede: A friend and I built a Daft Punk helmet for Halloween. We printed it, finished it like a car body, and made our own vacuum former for the visor. I also tried to build a vocoder into it.
+lede: A friend and I built a Daft Punk helmet for Halloween. We printed it,
+  finished it like a car body, and made our own vacuum former for the visor. I
+  also tried to build a vocoder into it.
 ---
 <div class="hero2">
   <figure>
