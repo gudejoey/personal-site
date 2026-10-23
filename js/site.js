@@ -9,24 +9,54 @@ const gallery = [
   { src: "noexit", alt: "Green poster with two eyes, arrow-shaped trees and the exit-sign running figure above the word EXIT" },
   { src: "greens", alt: "Young boy with a red scarf carrying a large bunch of greens across a sidewalk" }
 ];
+// the sample that rotates on the Work page; the Gallery page shows everything
+const featured = ["grease", "cat", "spring", "moped", "noexit", "roses"];
 
 const $ = (s, r = document) => r.querySelector(s);
 
-// viewer: one dialog for the whole site, created on first use
-let dlg;
-function openViewer(src, alt) {
+/* Viewer: one dialog for the whole site, created on first use. The enlarged image grows out of
+   the thumbnail that was clicked and shrinks back into it on close. */
+let dlg, origin = null, closing = false;
+const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ease = "cubic-bezier(.2,.7,.2,1)";
+
+// transform that makes the viewer image sit exactly over `thumb`
+function fromThumb(vimg, thumb) {
+  const a = thumb.getBoundingClientRect(), b = vimg.getBoundingClientRect();
+  return `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
+}
+
+function closeViewer() {
+  if (closing || !dlg.open) return;
+  const vimg = $("#vimg"), thumb = origin;
+  const done = () => { dlg.close(); dlg.classList.remove("closing"); if (thumb) thumb.style.visibility = ""; closing = false; };
+  if (!thumb || !thumb.isConnected || calm()) { done(); return; }
+  closing = true;
+  dlg.classList.add("closing"); // fades the backdrop and Close button
+  vimg.animate([{ transform: "none" }, { transform: fromThumb(vimg, thumb) }], { duration: 320, easing: ease }).finished.then(done, done);
+}
+
+async function openViewer(src, alt, thumb) {
   if (!dlg) {
     document.body.insertAdjacentHTML("beforeend", `
       <dialog id="viewer" aria-label="Image viewer">
         <div class="in"><img id="vimg" alt=""><div class="cap"><button class="x" id="vclose">Close</button></div></div>
       </dialog>`);
     dlg = $("#viewer");
-    $("#vclose").addEventListener("click", () => dlg.close());
-    dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+    $("#vclose").addEventListener("click", closeViewer);
+    dlg.addEventListener("click", e => { if (e.target === dlg) closeViewer(); });
+    dlg.addEventListener("cancel", e => { e.preventDefault(); closeViewer(); }); // Esc animates too
   }
   const vimg = $("#vimg");
   vimg.src = "img/" + src + ".jpg"; vimg.alt = alt;
-  if (typeof dlg.showModal === "function") dlg.showModal();
+  await vimg.decode().catch(() => {}); // know the final size before measuring
+  if (typeof dlg.showModal !== "function") return;
+  dlg.showModal();
+  origin = thumb || null;
+  if (!thumb || calm()) return;
+  thumb.style.visibility = "hidden"; // it looks like the thumbnail itself lifts off the page
+  vimg.style.transformOrigin = "0 0";
+  vimg.animate([{ transform: fromThumb(vimg, thumb) }, { transform: "none" }], { duration: 420, easing: ease });
 }
 
 function initCopy(root) {
@@ -38,6 +68,37 @@ function initCopy(root) {
   }));
 }
 
+/* Carousel images rise toward the cursor, more the closer they are. The strip keeps moving
+   under a still mouse, so distances are re-measured every frame while the pointer is over it. */
+function initLift(carousel) {
+  if (!matchMedia("(hover: hover) and (pointer: fine)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const buttons = [...carousel.querySelectorAll("button")];
+  const reach = 260; // px from the cursor at which an image stops reacting
+  let x = null, frame = 0;
+  const tick = () => {
+    if (x === null || !carousel.isConnected) { frame = 0; return; }
+    for (const b of buttons) {
+      const r = b.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - x);
+      const lift = Math.max(0, 1 - d / reach);
+      b.style.setProperty("--lift", (lift * lift * (3 - 2 * lift)).toFixed(3)); // smoothstep, so the falloff is soft
+    }
+    frame = requestAnimationFrame(tick);
+  };
+  carousel.addEventListener("pointerenter", e => {
+    x = e.clientX;
+    carousel.classList.add("settling"); // ease in from rest instead of snapping
+    setTimeout(() => carousel.classList.remove("settling"), 450);
+    if (!frame) frame = requestAnimationFrame(tick);
+  });
+  carousel.addEventListener("pointermove", e => { x = e.clientX; });
+  carousel.addEventListener("pointerleave", () => {
+    x = null;
+    carousel.classList.add("settling");
+    buttons.forEach(b => b.style.setProperty("--lift", 0));
+  });
+}
+
 // everything inside <main>; runs on first load and after every in-place navigation
 function initMain() {
   const main = $("main");
@@ -46,8 +107,20 @@ function initMain() {
     grid.innerHTML = gallery.map((p, i) => `<button type="button" data-i="${i}" aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${p.alt}" loading="lazy"></button>`).join("");
     grid.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
-      const p = gallery[+b.dataset.i]; openViewer(p.src, p.alt);
+      const p = gallery[+b.dataset.i]; openViewer(p.src, p.alt, b);
     });
+  }
+  const track = $("#carousel .track", main);
+  if (track) {
+    const items = featured.map(src => gallery.find(p => p.src === src)).filter(Boolean);
+    const set = hidden => items.map(p => `<button type="button" data-src="${p.src}"${hidden ? ' tabindex="-1"' : ""} aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${hidden ? "" : p.alt}"></button>`).join("");
+    // two copies back to back; the track slides left by exactly one copy, then loops seamlessly
+    track.innerHTML = `<div class="set">${set(false)}</div><div class="set" aria-hidden="true">${set(true)}</div>`;
+    track.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      const p = gallery.find(g => g.src === b.dataset.src); openViewer(p.src, p.alt, b);
+    });
+    initLift($("#carousel", main));
   }
   initCopy(main);
 }

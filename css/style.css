@@ -39,7 +39,10 @@ img { display: block; max-width: 100%; }
 
 .fill { background: var(--note); padding: 0 4px; font-family: var(--mono); font-size: 0.85em; border-radius: 2px; white-space: nowrap; }
 
-header.site { padding-block: var(--s2) var(--s2); }
+header.site { padding-block: var(--s0) var(--s0); border-bottom: 1px solid var(--ink); }
+/* every page starts the same distance under the header rule */
+main > section > :first-child { margin-top: var(--s2); }
+main > section > .sechead:first-child { border-top: 0; padding-top: 0; }
 .top { display: flex; flex-wrap: wrap; gap: var(--s0) var(--s3); justify-content: space-between; align-items: flex-start; }
 nav.site { padding-top: 0.2rem; }
 .lockup { display: flex; gap: 16px; align-items: center; }
@@ -69,7 +72,7 @@ nav.site { padding-top: 0.2rem; }
 }
 @media (prefers-reduced-motion: reduce) { .face .eye, .face .snout, .face .snout.poke { animation: none; } }
 .id { flex: 1; min-width: 0; }
-.name { font-family: var(--serif); font-weight: 400; font-size: clamp(2.1rem, 4.6vw, 3.1rem); line-height: 1; margin: 0; letter-spacing: -0.015em; font-style: italic; }
+.name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 3.6vw, 2.4rem); line-height: 1; margin: 0; letter-spacing: -0.015em; font-style: italic; }
 .name a { text-decoration: none; }
 .tag { margin: 12px 0 0; font-size: 0.9375rem; color: var(--graphite); }
 nav.site { display: flex; gap: var(--s2); }
@@ -88,25 +91,50 @@ nav.site a { font-family: var(--mono); font-size: 0.8125rem; padding-bottom: 2px
 .label { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.9375rem; line-height: 1.35; }
 .label .pl { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); padding-top: 1px; }
 .label .t { font-weight: 500; }
+/* hovering a project swipes the highlighter across its title */
+.label .hl { font-weight: inherit; padding: 0 3px; margin: 0 -3px; border-radius: 2px;
+  background: linear-gradient(var(--note), var(--note)) 0 0 / 0% 100% no-repeat; transition: background-size .3s cubic-bezier(.2,.7,.2,1); }
+.plate:hover .hl, .plate:focus-visible .hl { background-size: 100% 100%; }
 .label .t i { font-style: normal; font-weight: 400; color: var(--graphite); }
-.label .note { grid-column: 2; color: var(--graphite); font-size: 0.875rem; line-height: 1.45;
-  max-height: 0; opacity: 0; overflow: hidden; transform: translateY(-4px); transition: max-height .4s ease, opacity .3s ease, transform .3s ease; }
-.plate:hover .note, .plate:focus-visible .note { max-height: 4.5em; opacity: 1; transform: none; }
-@media (hover: none) { .label .note { max-height: none; opacity: 1; transform: none; } }
+/* description slides up over the bottom of the image, so nothing below it moves */
+.plate .note { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 14px 10px;
+  background: linear-gradient(to top, rgba(23, 22, 20, .55), rgba(23, 22, 20, 0));
+  color: var(--paper); font-size: 0.8125rem; line-height: 1.45; text-shadow: 0 1px 2px rgba(23, 22, 20, .35);
+  opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .4s cubic-bezier(.2,.7,.2,1); }
+.plate:hover .note, .plate:focus-visible .note { opacity: 1; transform: none; }
+@media (hover: none) { .plate .note { opacity: 1; transform: none; } }
 
-.projects { display: grid; grid-template-columns: 2fr 1fr; gap: var(--s3) var(--s2); }
+/* one row; column widths follow each image's aspect ratio (3:2, 3:4, 1:1) so all three share a height */
+.projects { display: grid; grid-template-columns: 1.5fr .75fr 1fr; gap: var(--s3) var(--s2); }
 .projects .stage .frame { aspect-ratio: 3 / 2; }
 .projects .helmet .frame { aspect-ratio: 3 / 4; }
-.projects .p418 { grid-column: 1 / -1; }
-.duo { display: grid; grid-template-columns: 1fr 2fr; gap: var(--s2); }
-.duo .frame:first-child { aspect-ratio: 3 / 4; }
-.duo .frame:last-child { aspect-ratio: 3 / 2; }
+.projects .p418 .frame { aspect-ratio: 1 / 1; }
 
 .gallery { columns: 4; column-gap: var(--s0); }
 .gallery button { all: unset; display: block; overflow: hidden; cursor: pointer; margin-bottom: var(--s0); break-inside: avoid; }
 .gallery button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .gallery img { width: 100%; height: auto; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .gallery button:hover img { transform: scale(1.06); }
+
+/* Work page carousel: two identical sets slide left by one set's width, then loop */
+.carousel { overflow: hidden; padding-block: 22px 6px; margin-top: -22px; -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); }
+.carousel .track { display: flex; width: max-content; animation: marquee 50s linear infinite; }
+/* keeps moving under the mouse; only pauses while a keyboard user is focused on an image */
+.carousel:has(:focus-visible) .track { animation-play-state: paused; }
+.carousel .set { display: flex; gap: var(--s0); padding-right: var(--s0); }
+/* --lift (0–1) is set by site.js from how close each image is to the cursor */
+.carousel button { all: unset; flex: none; display: block; cursor: pointer; --lift: 0;
+  transform: translateY(calc(var(--lift) * -16px));
+  box-shadow: 0 calc(var(--lift) * 14px) calc(var(--lift) * 26px) rgba(23, 22, 20, calc(var(--lift) * .22)); }
+.carousel.settling button { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease; }
+.carousel button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.carousel img { height: 300px; width: auto; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .carousel { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .carousel .track { animation: none; }
+  .carousel .set[aria-hidden] { display: none; }
+}
 
 footer.site { margin-top: var(--s3); border-top: 1px solid var(--ink); padding-block: var(--s0) var(--s4);
   display: flex; flex-wrap: wrap; gap: var(--s0) var(--s3); justify-content: space-between; }
@@ -124,14 +152,6 @@ footer.site ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px var(
 /* links inside body text get the highlighter; the hover underline still grows on top */
 .prose p a { background-color: var(--note); padding: 0 3px; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
-.tb { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1.5px solid var(--ink); margin-bottom: var(--s4); }
-.tb > div { border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 8px 12px 10px; min-width: 0; }
-.tb > div:nth-child(4n) { border-right: 0; }
-.tb > div.wide { grid-column: span 2; }
-.tb > div.last { border-bottom: 0; }
-.tb dt { font-family: var(--mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--graphite); }
-.tb dd { margin: 2px 0 0; font-size: 0.9375rem; }
-.tb .status dd { font-weight: 500; }
 
 .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s3); }
 .steps li { display: grid; grid-template-columns: 3rem minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--s2); align-items: start; border-top: 1px solid var(--rule); padding-top: var(--s0); }
@@ -172,30 +192,30 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .portrait .arrow { flex: none; width: 52px; height: auto; fill: none; stroke: var(--graphite); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; margin-top: 10px; }
 
 /* viewer */
-dialog { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1100px); max-height: 92vh; }
+dialog { border: 0; padding: 0; background: transparent; overflow: visible; /* the image flies in from outside the dialog box; do not clip it */ max-width: min(92vw, 1100px); max-height: 92vh; }
 dialog::backdrop { background: rgba(242, 240, 234, .96); }
 dialog .in { display: grid; gap: 12px; justify-items: center; }
 dialog img { max-height: 80vh; width: auto; max-width: 100%; box-shadow: 0 2px 30px rgba(23,22,20,.12); }
 dialog .cap { display: flex; gap: var(--s2); justify-content: flex-end; width: 100%; color: var(--ink); align-items: baseline; }
 dialog button.x { all: unset; cursor: pointer; font-family: var(--mono); font-size: var(--s-1); border-bottom: 1px solid var(--ink); white-space: nowrap; }
+/* backdrop and Close fade while the image itself flies in from / back to its thumbnail (site.js) */
+dialog[open]::backdrop, dialog[open] .cap { animation: fade-in .35s ease both; }
+dialog.closing::backdrop, dialog.closing .cap { animation: fade-out .3s ease both; }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-out { to { opacity: 0; } }
 
 @media (max-width: 860px) {
   .gallery { columns: 3; }
   .about, .hero2 { grid-template-columns: minmax(0, 1fr); }
-  .tb { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tb > div:nth-child(4n) { border-right: 1px solid var(--ink); }
-  .tb > div:nth-child(2n) { border-right: 0; }
   .steps li { grid-template-columns: 2.25rem minmax(0, 1fr); }
   .steps li > :last-child { grid-column: 2; }
 }
 @media (max-width: 600px) {
-  .projects, .duo { grid-template-columns: minmax(0, 1fr); }
+  .carousel img { height: 200px; }
+  .projects { grid-template-columns: minmax(0, 1fr); }
   .gallery { columns: 2; }
   .cue { grid-template-columns: minmax(0, 1fr); }
   .cue .margin { border-right: 0; border-bottom: 1px solid var(--rule); padding: 0 0 8px; grid-auto-flow: column; justify-content: start; gap: 14px; }
-  .tb { grid-template-columns: minmax(0, 1fr); }
-  .tb > div, .tb > div.wide { grid-column: auto; border-right: 0 !important; }
-  header.site { padding-block: var(--s3) var(--s2); }
   .mark svg { height: 2rem; }
   .lockup { gap: 14px; }
 }
