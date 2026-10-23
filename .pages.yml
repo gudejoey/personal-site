@@ -1,0 +1,140 @@
+# Pages CMS (https://pagescms.org): editing forms for the site's content.
+# Each save commits to GitHub, which rebuilds and republishes the site.
+media:
+  input: img
+  output: img
+  categories: [image]
+
+content:
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/projects
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    exclude: [projects.11tydata.js]
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        required: true
+      - name: card_title
+        label: Title on the Work page
+        type: string
+        description: Leave empty to use the page title.
+      - name: order
+        label: Position on the Work page
+        type: number
+        required: true
+      - name: cover
+        label: Cover image
+        type: image
+        required: true
+      - name: cover_alt
+        label: Cover image description (for screen readers)
+        type: string
+      - name: cover_ratio
+        label: Cover shape
+        type: select
+        options:
+          values: ["3 / 2", "4 / 3", "16 / 9", "1 / 1", "3 / 4", "2 / 3"]
+        description: Width / height. Covers are cropped to this shape.
+      - name: note
+        label: Hover description
+        type: text
+      - name: lede
+        label: Intro paragraph
+        type: text
+      - name: body
+        label: Page content
+        type: code
+        options:
+          format: markdown
+        description: Markdown, or HTML for custom layouts.
+
+  - name: gallery
+    label: Gallery
+    type: file
+    path: src/_data/gallery.json
+    format: json
+    list: true
+    fields:
+      - name: image
+        type: image
+        required: true
+      - name: alt
+        label: Description (for screen readers)
+        type: string
+      - name: featured
+        label: Show in the Work page carousel
+        type: boolean
+
+  - name: about
+    label: About
+    type: file
+    path: src/about.md
+    format: yaml-frontmatter
+    fields:
+      - name: heading
+        type: string
+      - name: body
+        label: Text
+        type: rich-text
+      - name: portrait
+        label: Drawing
+        type: image
+      - name: portrait_alt
+        label: Drawing description (for screen readers)
+        type: string
+      - name: portrait_caption
+        label: Caption next to the drawing
+        type: string
+      - name: layout
+        type: string
+        hidden: true
+      - name: permalink
+        type: string
+        hidden: true
+      - name: title
+        type: string
+        hidden: true
+
+  - name: timeline
+    label: Timeline (About page)
+    type: file
+    path: src/_data/timeline.json
+    format: json
+    list: true
+    fields:
+      - name: years
+        type: string
+      - name: entry
+        type: string
+      - name: detail
+        type: string
+      - name: type
+        type: select
+        options:
+          values: [education, work, award, design, teaching]
+
+  - name: site
+    label: Site settings
+    type: file
+    path: src/_data/site.json
+    format: json
+    fields:
+      - name: name
+        type: string
+      - name: tagline
+        type: string
+      - name: email
+        type: string
+      - name: links
+        label: Footer links
+        type: object
+        list: true
+        fields:
+          - name: label
+            type: string
+          - name: url
+            type: string

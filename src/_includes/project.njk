@@ -1,0 +1,12 @@
+---
+layout: base.njk
+nav: work
+---
+<section>
+  <a class="back" href="index.html">← Work</a>
+  <h2 class="ptitle">{{ title }}</h2>
+  {%- if lede %}
+  <p class="lede">{{ lede }}</p>
+  {%- endif %}
+  {{ content | safe }}
+</section>

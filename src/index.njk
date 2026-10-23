@@ -1,0 +1,29 @@
+---
+layout: base.njk
+permalink: index.html
+nav: work
+---
+<section>
+  <div class="sechead"><h2>Projects</h2><span class="mono muted">{{ collections.projects.length }}</span></div>
+  {#- each column is as wide as its cover's aspect ratio, so all covers line up at one height #}
+  <div class="projects" style="--cols:{% for p in collections.projects %} {{ p.data.cover_ratio | ratio }}fr{% endfor %}">
+    {%- for p in collections.projects %}
+    <a class="plate" href="{{ p.page.fileSlug }}.html">
+      <div class="frame" style="aspect-ratio: {{ p.data.cover_ratio }}"><img src="{{ p.data.cover }}" alt="{{ p.data.cover_alt }}">{% if p.data.note %}<span class="note">{{ p.data.note }}</span>{% endif %}</div>
+      <div class="label"><span class="pl">Pl. {{ loop.index }}</span><span class="t"><b class="hl">{{ p.data.card_title or p.data.title }}</b></span></div>
+    </a>
+    {%- endfor %}
+  </div>
+
+  <div class="sechead"><h2>Design &amp; photography</h2><a href="gallery.html">View all →</a></div>
+  {#- the strip holds two identical sets; CSS slides it left by one set, then loops #}
+  <div class="carousel" id="carousel"><div class="track">
+    {%- for hidden in [false, true] %}
+    <div class="set"{% if hidden %} aria-hidden="true"{% endif %}>
+      {%- for p in gallery %}{% if p.featured %}
+      <button type="button" aria-label="Enlarge image"{% if hidden %} tabindex="-1"{% endif %}><img src="{{ p.image }}" alt="{{ '' if hidden else p.alt }}"></button>
+      {%- endif %}{% endfor %}
+    </div>
+    {%- endfor %}
+  </div></div>
+</section>

@@ -104,11 +104,8 @@ nav.site a { font-family: var(--mono); font-size: 0.8125rem; padding-bottom: 2px
 .plate:hover .note, .plate:focus-visible .note { opacity: 1; transform: none; }
 @media (hover: none) { .plate .note { opacity: 1; transform: none; } }
 
-/* one row; column widths follow each image's aspect ratio (3:2, 3:4, 1:1) so all three share a height */
-.projects { display: grid; grid-template-columns: 1.5fr .75fr 1fr; gap: var(--s3) var(--s2); }
-.projects .stage .frame { aspect-ratio: 3 / 2; }
-.projects .helmet .frame { aspect-ratio: 3 / 4; }
-.projects .p418 .frame { aspect-ratio: 1 / 1; }
+/* one row; --cols (set by the template) makes each column as wide as its cover's aspect ratio, so all covers share a height */
+.projects { display: grid; grid-template-columns: var(--cols, repeat(3, minmax(0, 1fr))); gap: var(--s3) var(--s2); }
 
 .gallery { columns: 4; column-gap: var(--s0); }
 .gallery button { all: unset; display: block; overflow: hidden; cursor: pointer; margin-bottom: var(--s0); break-inside: avoid; }

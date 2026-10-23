@@ -1,0 +1,10 @@
+{
+  "name": "Jerry Yu",
+  "tagline": "Exploring technology and arts at Stanford.",
+  "email": "jerryjyu@stanford.edu",
+  "links": [
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/jerry-yu-/" },
+    { "label": "GitHub", "url": "https://github.com/gudejoey" },
+    { "label": "Resume", "url": "#" }
+  ]
+}

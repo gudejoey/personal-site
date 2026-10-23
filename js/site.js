@@ -1,17 +1,5 @@
-// Posters and photos, interleaved on purpose
-const gallery = [
-  { src: "grease", alt: "Pink neon Grease poster set at a diner counter with showtimes and ticket QR code" },
-  { src: "cat", alt: "Tabby and white cat sniffing a white orchid in window light" },
-  { src: "lmp", alt: "Night street with a streetlamp whose light cone forms the letter A between L, M and P" },
-  { src: "moped", alt: "Boy with a red scarf riding on the back of a scooter in low evening sun" },
-  { src: "spring", alt: "Green hills of grass with the word SPRING emerging from them and a child flying a kite" },
-  { src: "roses", alt: "Pink roses against a deep blue sky, shot through a soft foreground blur" },
-  { src: "noexit", alt: "Green poster with two eyes, arrow-shaped trees and the exit-sign running figure above the word EXIT" },
-  { src: "greens", alt: "Young boy with a red scarf carrying a large bunch of greens across a sidewalk" }
-];
-// the sample that rotates on the Work page; the Gallery page shows everything
-const featured = ["grease", "cat", "spring", "moped", "noexit", "roses"];
-
+// The gallery and carousel images are written into the pages at build time (src/_data/gallery.json);
+// this script only adds behaviour to them.
 const $ = (s, r = document) => r.querySelector(s);
 
 /* Viewer: one dialog for the whole site, created on first use. The enlarged image grows out of
@@ -48,7 +36,7 @@ async function openViewer(src, alt, thumb) {
     dlg.addEventListener("cancel", e => { e.preventDefault(); closeViewer(); }); // Esc animates too
   }
   const vimg = $("#vimg");
-  vimg.src = "img/" + src + ".jpg"; vimg.alt = alt;
+  vimg.src = src; vimg.alt = alt;
   await vimg.decode().catch(() => {}); // know the final size before measuring
   if (typeof dlg.showModal !== "function") return;
   dlg.showModal();
@@ -102,26 +90,18 @@ function initLift(carousel) {
 // everything inside <main>; runs on first load and after every in-place navigation
 function initMain() {
   const main = $("main");
-  const grid = $("#gallery", main);
-  if (grid) {
-    grid.innerHTML = gallery.map((p, i) => `<button type="button" data-i="${i}" aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${p.alt}" loading="lazy"></button>`).join("");
-    grid.addEventListener("click", e => {
+  // clicking any gallery or carousel image enlarges it
+  for (const box of [$("#gallery", main), $("#carousel", main)]) {
+    if (!box) continue;
+    box.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
-      const p = gallery[+b.dataset.i]; openViewer(p.src, p.alt, b);
+      const img = $("img", b), src = img.getAttribute("src");
+      // the carousel's second (duplicate) set has empty alt text, so borrow it from the first
+      const alt = img.alt || box.querySelector(`img[src="${src}"]`).alt;
+      openViewer(src, alt, b);
     });
   }
-  const track = $("#carousel .track", main);
-  if (track) {
-    const items = featured.map(src => gallery.find(p => p.src === src)).filter(Boolean);
-    const set = hidden => items.map(p => `<button type="button" data-src="${p.src}"${hidden ? ' tabindex="-1"' : ""} aria-label="Enlarge image"><img src="img/${p.src}.jpg" alt="${hidden ? "" : p.alt}"></button>`).join("");
-    // two copies back to back; the track slides left by exactly one copy, then loops seamlessly
-    track.innerHTML = `<div class="set">${set(false)}</div><div class="set" aria-hidden="true">${set(true)}</div>`;
-    track.addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
-      const p = gallery.find(g => g.src === b.dataset.src); openViewer(p.src, p.alt, b);
-    });
-    initLift($("#carousel", main));
-  }
+  if ($("#carousel", main)) initLift($("#carousel", main));
   initCopy(main);
 }
 initMain();

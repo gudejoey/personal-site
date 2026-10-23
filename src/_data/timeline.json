@@ -1,0 +1,10 @@
+[
+  { "years": "2026–30", "entry": "Stanford University", "detail": "B.S. Computer Science, in progress", "type": "education" },
+  { "years": "2026", "entry": "Stitch Studio", "detail": "SWE Intern. Developed Agent workflows, evals, state machine engine", "type": "work" },
+  { "years": "2026", "entry": "International AI Olympiad", "detail": "Team USA, Honorable Mention", "type": "award" },
+  { "years": "2026", "entry": "USACO", "detail": "Platinum division", "type": "award" },
+  { "years": "2024–26", "entry": "Piedmont Unified School District", "detail": "Designed visuals for seven high school productions", "type": "design" },
+  { "years": "2025", "entry": "XCamp", "detail": "Taught USACO Bronze summer camp", "type": "teaching" },
+  { "years": "2025", "entry": "Heffernan Insurance Brokers", "detail": "IT Intern. Researched quantum computing and led training software UI redesign", "type": "work" },
+  { "years": "2023–25", "entry": "Decade Prep", "detail": "Founded and directed nonprofit teaching public robotics workshops for Bay Area students", "type": "teaching" }
+]

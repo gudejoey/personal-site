@@ -1,0 +1,31 @@
+---
+layout: base.njk
+nav: about
+---
+<section>
+  <div class="about">
+    <div class="prose">
+      <h2 class="ptitle" style="margin-bottom:var(--s2);">{{ heading }}</h2>
+      {{ content | safe }}
+      {%- if portrait %}
+      <figure class="portrait">
+        <img src="{{ portrait }}" alt="{{ portrait_alt }}">
+        <figcaption>
+          <svg class="arrow" viewBox="0 0 64 40" aria-hidden="true"><path d="M60 8 C 44 2, 20 6, 6 30" /><path d="M2 22 L6 31 L15 27" /></svg>
+          <span>{{ portrait_caption }}</span>
+        </figcaption>
+      </figure>
+      {%- endif %}
+    </div>
+    <div style="min-width:0; overflow-x:auto">
+      <table class="idx">
+        <thead><tr><th>Year</th><th>Entry</th><th>Type</th></tr></thead>
+        <tbody>
+          {%- for row in timeline %}
+          <tr><td>{{ row.years }}</td><td>{{ row.entry }}<span class="sub">{{ row.detail }}</span></td><td>{{ row.type }}</td></tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

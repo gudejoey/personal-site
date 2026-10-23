@@ -1,0 +1,14 @@
+---
+layout: base.njk
+permalink: gallery.html
+nav: gallery
+title: Gallery
+---
+<section>
+  <h2 class="ptitle" style="margin-bottom:var(--s2);">Gallery</h2>
+  <div class="gallery" id="gallery">
+    {%- for p in gallery %}
+    <button type="button" aria-label="Enlarge image"><img src="{{ p.image }}" alt="{{ p.alt }}" loading="lazy"></button>
+    {%- endfor %}
+  </div>
+</section>
