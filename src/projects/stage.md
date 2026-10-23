@@ -40,7 +40,21 @@ lede: I designed projected animated backdrops for five high school productions
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
       <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
     </figure>
-  </div><div class="cue">
+  </div>
+  <div class="cue">
+    <div class="margin"><span>Show</span><b>Eurydice</b><span>2026</span></div>
+    <figure>
+      <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
+      <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
+    </figure>
+  </div>
+  <div class="cue">
+    <div class="margin"><span>Show</span><b>Fatherland</b><span>2026</span></div>
+    <figure>
+      <p>Created a graphic of a Texas truck hauling a pile of license plates. Unfortunately, there are no photos. </p>
+    </figure>
+  </div>
+  <div class="cue">
     <div class="margin"><span>Show</span><b>Mouthwashing</b><span>2026</span></div>
     <figure>
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
