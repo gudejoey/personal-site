@@ -21,21 +21,30 @@ lede: I designed projected animated backdrops for five high school productions
     </figure>
   </div>
   <div class="cue">
-    <div class="margin"><span>Show</span><b>Dracula</b><span>2025</span><span>Cue <span class="fill">no.</span></span></div>
+    <div class="margin"><span>Show</span><b>Dracula</b><span>2025</span></span></div>
     <figure>
       <img src="img/stage-signs.jpg" alt="Handwritten station and shop signs scattered across a dark projected backdrop as actors cross the stage">
       <p>Station and shop signs in handwriting scattered across the backdrop: Taxis, Cold Drinks, Check In, Way Out. <span class="fill">how it moved</span></p>
     </figure>
   </div>
   <div class="cue tall">
-    <div class="margin"><span>Show</span><b><span class="fill">title</span></b><span><span class="fill">year</span></span><span>Cue <span class="fill">no.</span></span></div>
+    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
     <figure>
       <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
       <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
     </figure>
   </div>
-  <div class="cue">
-    <div class="margin"><span>Next</span></div>
-    <div class="needed" style="aspect-ratio: 16 / 6">Add a screen recording or an After Effects export here.<br>A 10-second loop of one cue says more than a still.</div>
+  <div class="cue tall">
+    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
+    <figure>
+      <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
+      <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
+    </figure>
+  </div><div class="cue tall">
+    <div class="margin"><span>Show</span><b><span class="fill">Noises Off</span></b><span>2025</span></div>
+    <figure>
+      <img src="img/stage-wall.jpg" alt="Projected stone wall with a lit window behind four performers on an upper level, lit in red">
+      <p>A stone wall with one lit window, projected behind performers on the upper level.</p>
+    </figure>
   </div>
 </div>
