@@ -1,12 +1,16 @@
 ---
-title: Stage projections
+title: Theater design
 card_title: Theater design
 order: 1
 cover: img/stage-funnel.jpg
-cover_alt: "A glowing wireframe funnel projected across a theater's back wall, with a seated performer in front"
+cover_alt: A glowing wireframe funnel projected across a theater's back wall,
+  with a seated performer in front
 cover_ratio: 3 / 2
-note: Animated backdrops for high school productions, drawn in Illustrator and animated in After Effects and Blender.
-lede: I designed projected animated backdrops for five high school productions and various design work for two more. Each one was drawn in Illustrator and animated in After Effects.
+note: Animated backdrops for high school productions, drawn in Illustrator and
+  animated in After Effects and Blender.
+lede: I designed projected animated backdrops for five high school productions
+  and various design work for two more. Each one was drawn in Illustrator and
+  animated in After Effects or Blender.
 ---
 <div class="cues">
   <div class="cue">
