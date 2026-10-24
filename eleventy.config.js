@@ -1,6 +1,22 @@
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+
 export default function (eleventyConfig) {
-  // static assets are copied to the output as they are
-  for (const dir of ["img", "svg", "css", "js"]) eleventyConfig.addPassthroughCopy(dir);
+  // static assets are copied to the output as they are (src/img holds uploads, including videos)
+  for (const dir of ["svg", "css", "js"]) eleventyConfig.addPassthroughCopy(dir);
+  eleventyConfig.addPassthroughCopy({ "src/img": "img" });
+
+  // Every <img> in the built pages is resized into small WebP copies (400/800/1600px wide, never
+  // upscaled) and given a srcset, so browsers download only the size they need. Templates write
+  // image paths as "/img/…", which the plugin reads from src/img. Add eleventy:ignore to skip one.
+  eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
+    formats: ["webp"],
+    widths: [400, 800, 1600],
+    urlPath: "/img/sized/",
+    outputDir: "_site/img/sized/",
+    htmlOptions: {
+      imgAttributes: { loading: "lazy", decoding: "async", sizes: "(max-width: 600px) 100vw, 800px" }
+    }
+  });
 
   // links to other sites written in Markdown (e.g. the About text) open in a new tab
   let markdown;
@@ -18,6 +34,9 @@ export default function (eleventyConfig) {
 
   // Markdown fields inside front matter (e.g. a project section's text)
   eleventyConfig.addFilter("md", s => (s ? markdown.render(String(s)) : ""));
+
+  // content stores paths like "img/photo.jpg"; pages need "/img/photo.jpg" so the image plugin finds them
+  eleventyConfig.addFilter("asset", s => (!s || /^(\/|https?:)/.test(s) ? s : "/" + s));
 
   // media lists can hold images or videos; decide by file extension
   eleventyConfig.addFilter("isVideo", f => /\.(mp4|webm|mov|m4v)$/i.test(f || ""));

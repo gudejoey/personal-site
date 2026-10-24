@@ -11,7 +11,7 @@ Built with [Eleventy](https://www.11ty.dev). Content is edited in `src/` (or thr
 | Name, tagline, email, footer links | `src/_data/site.json` |
 | Header, footer and page shell | `src/_includes/base.njk` |
 | Styles and behaviour | `css/style.css`, `js/site.js` |
-| Images | `img/` |
+| Images and videos (resized to WebP automatically on build) | `src/img/` |
 
 ```
 npm install      # once

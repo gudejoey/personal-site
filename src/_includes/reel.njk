@@ -8,9 +8,9 @@
     {%- for m in shown %}
     <figure class="slide{% if loop.first %} on{% endif %}"{% if not loop.first %} aria-hidden="true"{% endif %} data-caption="{{ m.caption }}">
       {%- if m.file | isVideo %}
-      <video src="{{ m.file }}" muted loop playsinline preload="metadata"{% if m.alt %} aria-label="{{ m.alt }}"{% endif %}></video>
+      <video src="{{ m.file | asset }}" muted loop playsinline preload="metadata"{% if m.alt %} aria-label="{{ m.alt }}"{% endif %}></video>
       {%- else %}
-      <button type="button" aria-label="Enlarge image"{% if not loop.first %} tabindex="-1"{% endif %}><img src="{{ m.file }}" alt="{{ m.alt }}" loading="lazy"></button>
+      <button type="button" aria-label="Enlarge image"{% if not loop.first %} tabindex="-1"{% endif %}><img src="{{ m.file | asset }}" alt="{{ m.alt }}" sizes="(max-width: 600px) 100vw, 1000px"></button>
       {%- endif %}
     </figure>
     {%- endfor %}
@@ -23,8 +23,8 @@
   <div class="thumbs" role="group" aria-label="Choose image">
     {%- for m in shown %}
     <button type="button" class="thumb{% if loop.first %} on{% endif %}" aria-pressed="{{ 'true' if loop.first else 'false' }}" aria-label="Show {{ loop.index }} of {{ shown.length }}">
-      {%- if m.file | isVideo %}<video src="{{ m.file }}#t=0.1" muted playsinline preload="metadata"></video><span class="play" aria-hidden="true">▶</span>
-      {%- else %}<img src="{{ m.file }}" alt="" loading="lazy">{% endif -%}
+      {%- if m.file | isVideo %}<video src="{{ m.file | asset }}#t=0.1" muted playsinline preload="metadata"></video><span class="play" aria-hidden="true">▶</span>
+      {%- else %}<img src="{{ m.file | asset }}" alt="" sizes="100px">{% endif -%}
     </button>
     {%- endfor %}
     <span class="count mono muted"><span class="n">1</span> / {{ shown.length }}</span>

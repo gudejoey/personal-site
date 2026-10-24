@@ -8,7 +8,7 @@ title: Gallery
   <h2 class="ptitle" style="margin-bottom:var(--s2);">Gallery</h2>
   <div class="gallery" id="gallery">
     {%- for p in gallery %}
-    <button type="button" aria-label="Enlarge image"><img src="{{ p.image }}" alt="{{ p.alt }}" loading="lazy"></button>
+    <button type="button" aria-label="Enlarge image"><img src="{{ p.image | asset }}" alt="{{ p.alt }}" sizes="(max-width: 600px) 50vw, (max-width: 860px) 33vw, 300px"></button>
     {%- endfor %}
   </div>
 </section>

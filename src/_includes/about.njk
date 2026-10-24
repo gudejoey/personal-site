@@ -9,7 +9,7 @@ nav: about
       {{ content | safe }}
       {%- if portrait %}
       <figure class="portrait">
-        <img src="{{ portrait }}" alt="{{ portrait_alt }}">
+        <img src="{{ portrait }}" alt="{{ portrait_alt }}" eleventy:ignore>
         <figcaption>
           <svg class="arrow" viewBox="0 0 64 40" aria-hidden="true"><path d="M60 8 C 44 2, 20 6, 6 30" /><path d="M2 22 L6 31 L15 27" /></svg>
           <span>{{ portrait_caption }}</span>

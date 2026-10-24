@@ -1,7 +1,7 @@
 # Pages CMS (https://pagescms.org): editing forms for the site's content.
 # Each save commits to GitHub, which rebuilds and republishes the site.
 media:
-  input: img
+  input: src/img
   output: img
   categories: [image, video]
 
