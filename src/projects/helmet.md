@@ -21,28 +21,6 @@ media:
     alt: Assembled helmet before epoxy
     caption: The assembled helmet before epoxy
   - {}
-sections_heading: Build sequence
-sections:
-  - label: Step 01
-    title: 3D Printing
-    text: Helmet and gloves, printed in parts from public online models.
-  - label: Step 02
-    title: Assemble
-    text: Glue the sections into one shell.
-  - label: Step 03
-    title: Fill and sand
-    text: Coat in epoxy and body filler, then sand.
-  - label: Step 04
-    title: Paint
-    text: Spray silver and gold.
-  - label: Step 05
-    title: Vacuum-form the visor
-    text: Build a vacuum former from two sheets of plywood, then melt and form the
-      plastic sheet.
-  - label: Step 06
-    title: Vocoder
-    meta: Failed
-    text: Breadboard voice filters mounted inside the helmet. Broke before Halloween.
 ---
 We started from models we found online. After printing came the finishing: gluing the sections together, coating them in epoxy and body filler, and sanding.
 

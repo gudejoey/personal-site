@@ -181,7 +181,7 @@ function initMain() {
   initReels(main);
   initRail(main);
   // clicking any gallery, carousel or project image enlarges it
-  for (const box of main.querySelectorAll("#gallery, #carousel, .media, .reel .lead")) {
+  for (const box of main.querySelectorAll("#gallery, #carousel, .reel .lead")) {
     box.addEventListener("click", e => {
       const b = e.target.closest("button"), img = b && $("img", b);
       if (!img) return; // e.g. the reel's arrow buttons

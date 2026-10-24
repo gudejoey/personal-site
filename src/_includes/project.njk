@@ -14,7 +14,7 @@ nav: work
   {%- set body = content | trim %}
   {%- if (media | withFile).length %}
   <div class="hero2">
-    {%- set items = media %}{% include "media.njk" %}
+    {%- set items = media %}{% include "reel.njk" %}
     {%- if body %}<div class="prose">{{ body | safe }}</div>{% endif %}
   </div>
   {%- elif body %}
