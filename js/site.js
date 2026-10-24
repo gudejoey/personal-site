@@ -101,7 +101,9 @@ function initReels(main) {
   for (const reel of reels) {
     const slides = [...reel.querySelectorAll(".slide")], thumbs = [...reel.querySelectorAll(".thumb")];
     const cap = $(".reel-cap", reel), n = $(".count .n", reel);
+    let at = 0;
     const show = i => {
+      at = i;
       slides.forEach((s, j) => {
         s.classList.toggle("on", i === j);
         s.toggleAttribute("aria-hidden", i !== j);
@@ -112,6 +114,10 @@ function initReels(main) {
       if (n) n.textContent = i + 1;
       playActive(reel);
     };
+    // arrows on the lead frame step through the items, wrapping around at either end
+    const step = d => show((at + d + slides.length) % slides.length);
+    $(".step.prev", reel)?.addEventListener("click", () => step(-1));
+    $(".step.next", reel)?.addEventListener("click", () => step(1));
     thumbs.forEach((t, i) => {
       t.addEventListener("click", () => show(i));
       t.addEventListener("keydown", e => { // arrow keys step through the thumbnails
@@ -177,8 +183,9 @@ function initMain() {
   // clicking any gallery, carousel or project image enlarges it
   for (const box of main.querySelectorAll("#gallery, #carousel, .media, .reel .lead")) {
     box.addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
-      const img = $("img", b), src = img.getAttribute("src");
+      const b = e.target.closest("button"), img = b && $("img", b);
+      if (!img) return; // e.g. the reel's arrow buttons
+      const src = img.getAttribute("src");
       // the carousel's second (duplicate) set has empty alt text, so borrow it from the first
       const alt = img.alt || box.querySelector(`img[src="${src}"]`).alt;
       openViewer(src, alt, b);

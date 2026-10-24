@@ -180,6 +180,18 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .reel .slide button { all: unset; display: block; width: 100%; height: 100%; cursor: pointer; }
 .reel .slide button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .reel .slide img, .reel .slide video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.reel .lead { position: relative; }
+/* arrows: faint until the frame is hovered, always visible on touch screens */
+.reel .step { all: unset; position: absolute; top: 50%; z-index: 1; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; color: var(--ink); background: rgba(242, 240, 234, .78);
+  opacity: .35; transition: opacity .25s ease, background-color .25s ease; }
+.reel .step.prev { left: 10px; }
+.reel .step.next { right: 10px; }
+.reel .step svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.reel .lead:hover .step { opacity: .85; }
+.reel .step:hover, .reel .step:focus-visible { opacity: 1; background: var(--paper); }
+.reel .step:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+@media (hover: none) { .reel .step { opacity: .8; } }
 .thumbs { display: flex; align-items: center; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
 .thumb { all: unset; position: relative; flex: none; cursor: pointer; opacity: .5; transition: opacity .2s ease; }
 .thumb:hover, .thumb.on { opacity: 1; }

@@ -14,6 +14,10 @@
       {%- endif %}
     </figure>
     {%- endfor %}
+    {%- if shown.length > 1 %}
+    <button type="button" class="step prev" aria-label="Previous image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+    <button type="button" class="step next" aria-label="Next image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+    {%- endif %}
   </div>
   {%- if shown.length > 1 %}
   <div class="thumbs" role="group" aria-label="Choose image">
