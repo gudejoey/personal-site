@@ -36,7 +36,8 @@ sections:
     meta: "2025"
     text: Animated a moving tour route throughout British cities.
     media:
-      - {}
+      - file: img/IMG_3406.jpg
+        alt: Projection of map onto theater wall
   - label: Show
     title: Grease
     meta: "2026"
@@ -45,6 +46,9 @@ sections:
     media:
       - file: img/grease.jpg
         alt: Grease poster, set in Burger Palace
+      - file: img/IMG_4057.jpg
+        alt: Grease car
+        caption: Me in the Grease Lightning I helped built :)
   - label: Show
     title: Eurydice
     meta: "2026"
