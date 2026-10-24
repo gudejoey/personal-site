@@ -121,9 +121,8 @@ nav.site a { font-family: var(--mono); font-size: 0.8125rem; padding-bottom: 2px
 .carousel .set { display: flex; gap: var(--s0); padding-right: var(--s0); }
 /* --lift (0–1) is set by site.js from how close each image is to the cursor */
 .carousel button { all: unset; flex: none; display: block; cursor: pointer; --lift: 0;
-  transform: translateY(calc(var(--lift) * -16px));
-  box-shadow: 0 calc(var(--lift) * 14px) calc(var(--lift) * 26px) rgba(23, 22, 20, calc(var(--lift) * .22)); }
-.carousel.settling button { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease; }
+  transform: translateY(calc(var(--lift) * -16px)); }
+.carousel.settling button { transition: transform .45s cubic-bezier(.2,.7,.2,1); }
 .carousel button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .carousel img { height: 300px; width: auto; }
 @keyframes marquee { to { transform: translateX(-50%); } }
@@ -150,14 +149,6 @@ footer.site ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px var(
 .prose p a { background-color: var(--note); padding: 0 3px; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
 
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s3); }
-.steps li { display: grid; grid-template-columns: 3rem minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--s2); align-items: start; border-top: 1px solid var(--rule); padding-top: var(--s0); }
-.steps .needed { aspect-ratio: 16 / 7; }
-.steps .n { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); }
-.steps h3 { margin: 0 0 4px; font-size: var(--s0); font-weight: 600; }
-.steps p { margin: 0; color: var(--graphite); }
-.steps .broke h3::after { content: "failed"; font-family: var(--mono); font-size: 0.6875rem; font-weight: 400; color: var(--grease); border: 1px solid var(--grease); padding: 0 5px; margin-left: 8px; vertical-align: 2px; text-transform: uppercase; letter-spacing: .06em; }
-.needed { border: 1px dashed var(--graphite); aspect-ratio: 4 / 3; display: grid; place-items: center; text-align: center; padding: var(--s0); color: var(--graphite); font-family: var(--mono); font-size: var(--s-1); }
 
 .hero2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s3); align-items: start; margin-bottom: var(--s4); }
 .hero2 figure { margin: 0; }
@@ -167,10 +158,17 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .cue { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s2); }
 .cue .margin { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); border-right: 1px solid var(--rule); padding-right: var(--s0); display: grid; gap: 4px; align-content: start; }
 .cue .margin b { color: var(--ink); font-weight: 500; font-size: 0.875rem; }
-.cue figure { margin: 0; }
-.cue img { width: 100%; }
-.cue.tall img { max-width: 420px; }
-.cue p { margin: 10px 0 0; line-height: 1.5; max-width: 38rem; }
+.cue-body { min-width: 0; }
+.cue-body p { margin: 10px 0 0; line-height: 1.5; max-width: 38rem; }
+
+/* images/videos on project pages: one item shows at its own shape, several flow in two columns */
+.media figure { margin: 0; }
+.media button { all: unset; display: block; cursor: pointer; }
+.media button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.media img, .media video { display: block; width: 100%; height: auto; }
+.media:not(.many) img, .media:not(.many) video { width: auto; max-width: 100%; max-height: 75vh; }
+.media.many { columns: 2; column-gap: var(--s0); }
+.media.many figure { break-inside: avoid; margin-bottom: var(--s0); }
 
 /* about */
 .about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s4); margin-top: var(--s2); }
@@ -204,13 +202,12 @@ dialog.closing::backdrop, dialog.closing .cap { animation: fade-out .3s ease bot
 @media (max-width: 860px) {
   .gallery { columns: 3; }
   .about, .hero2 { grid-template-columns: minmax(0, 1fr); }
-  .steps li { grid-template-columns: 2.25rem minmax(0, 1fr); }
-  .steps li > :last-child { grid-column: 2; }
 }
 @media (max-width: 600px) {
   .carousel img { height: 200px; }
   .projects { grid-template-columns: minmax(0, 1fr); }
   .gallery { columns: 2; }
+  .media.many { columns: 1; }
   .cue { grid-template-columns: minmax(0, 1fr); }
   .cue .margin { border-right: 0; border-bottom: 1px solid var(--rule); padding: 0 0 8px; grid-auto-flow: column; justify-content: start; gap: 14px; }
   .mark svg { height: 2rem; }

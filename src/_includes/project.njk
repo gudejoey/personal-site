@@ -2,11 +2,39 @@
 layout: base.njk
 nav: work
 ---
+{#- A project page: intro, optional images beside the text, then optional sections
+    (shows, build steps…), each with its own text and images/videos. Empty parts are skipped. -#}
 <section>
   <a class="back" href="index.html">← Work</a>
   <h2 class="ptitle">{{ title }}</h2>
   {%- if lede %}
   <p class="lede">{{ lede }}</p>
   {%- endif %}
-  {{ content | safe }}
+
+  {%- set body = content | trim %}
+  {%- if (media | withFile).length %}
+  <div class="hero2">
+    {%- set items = media %}{% include "media.njk" %}
+    {%- if body %}<div class="prose">{{ body | safe }}</div>{% endif %}
+  </div>
+  {%- elif body %}
+  <div class="prose">{{ body | safe }}</div>
+  {%- endif %}
+
+  {%- if sections and sections.length %}
+  {%- if sections_heading %}
+  <div class="sechead"><h2>{{ sections_heading }}</h2><span class="mono muted">{{ sections.length }}</span></div>
+  {%- endif %}
+  <div class="cues">
+    {%- for s in sections %}
+    <div class="cue">
+      <div class="margin">{% if s.label %}<span>{{ s.label }}</span>{% endif %}<b>{{ s.title }}</b>{% if s.meta %}<span>{{ s.meta }}</span>{% endif %}</div>
+      <div class="cue-body">
+        {%- set items = s.media %}{% include "media.njk" %}
+        {{ s.text | md | safe }}
+      </div>
+    </div>
+    {%- endfor %}
+  </div>
+  {%- endif %}
 </section>

@@ -90,9 +90,8 @@ function initLift(carousel) {
 // everything inside <main>; runs on first load and after every in-place navigation
 function initMain() {
   const main = $("main");
-  // clicking any gallery or carousel image enlarges it
-  for (const box of [$("#gallery", main), $("#carousel", main)]) {
-    if (!box) continue;
+  // clicking any gallery, carousel or project image enlarges it
+  for (const box of main.querySelectorAll("#gallery, #carousel, .media")) {
     box.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
       const img = $("img", b), src = img.getAttribute("src");

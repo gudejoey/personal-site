@@ -3,7 +3,7 @@
 media:
   input: img
   output: img
-  categories: [image]
+  categories: [image, video]
 
 content:
   - name: projects
@@ -26,6 +26,7 @@ content:
         label: Position on the Work page
         type: number
         required: true
+        description: 1 is first (leftmost). Projects are sorted by this number.
       - name: cover
         label: Cover image
         type: image
@@ -45,12 +46,65 @@ content:
       - name: lede
         label: Intro paragraph
         type: text
+      - name: media
+        label: Images & videos beside the text
+        description: Optional. Shown next to the page content; nothing appears if empty.
+        type: object
+        list: true
+        fields:
+          - name: file
+            label: Image or video
+            type: file
+            options:
+              categories: [image, video]
+          - name: alt
+            label: Description (for screen readers)
+            type: string
+          - name: caption
+            type: string
       - name: body
         label: Page content
         type: code
         options:
           format: markdown
         description: Markdown, or HTML for custom layouts.
+      - name: sections_heading
+        label: Sections heading
+        type: string
+        description: Optional heading above the sections, e.g. "Build sequence".
+      - name: sections
+        label: Sections (shows, steps…)
+        description: Each section has its own title, text and any number of images/videos.
+        type: object
+        list: true
+        fields:
+          - name: label
+            type: string
+            description: Small label above the title, e.g. "Show" or "Step 01".
+          - name: title
+            type: string
+          - name: meta
+            label: Detail
+            type: string
+            description: Shown under the title, e.g. the year.
+          - name: text
+            type: text
+            description: Markdown is allowed, e.g. [link text](https://…).
+          - name: media
+            label: Images & videos
+            type: object
+            list: true
+            fields:
+              - name: file
+                label: Image or video
+                type: file
+                options:
+                  categories: [image, video]
+              - name: alt
+                label: Description (for screen readers)
+                type: string
+              - name: caption
+                type: string
 
   - name: gallery
     label: Gallery
