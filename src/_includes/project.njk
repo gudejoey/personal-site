@@ -25,16 +25,28 @@ nav: work
   {%- if sections_heading %}
   <div class="sechead"><h2>{{ sections_heading }}</h2><span class="mono muted">{{ sections.length }}</span></div>
   {%- endif %}
-  <div class="cues">
-    {%- for s in sections %}
-    <div class="cue">
-      <div class="margin">{% if s.label %}<span>{{ s.label }}</span>{% endif %}<b>{{ s.title }}</b>{% if s.meta %}<span>{{ s.meta }}</span>{% endif %}</div>
-      <div class="cue-body">
-        {%- set items = s.media %}{% include "media.njk" %}
-        {{ s.text | md | safe }}
-      </div>
+  {#- a rail of every section stays beside the content while scrolling and marks the one in view #}
+  <div class="timeline">
+    <nav class="rail" aria-label="Sections">
+      <ol>
+        {%- for s in sections %}
+        <li><a href="#s{{ loop.index }}"><span class="when">{{ s.meta or s.label }}</span><span class="what">{{ s.title }}</span></a></li>
+        {%- endfor %}
+      </ol>
+      <span class="marker" aria-hidden="true"></span>
+    </nav>
+    <div class="entries">
+      {%- for s in sections %}
+      <article class="entry" id="s{{ loop.index }}">
+        <header class="entry-head">
+          <span class="mono muted">{{ s.label }}{% if s.label and s.meta %} · {% endif %}{{ s.meta }}</span>
+          <h3>{{ s.title }}</h3>
+        </header>
+        {%- set items = s.media %}{% include "reel.njk" %}
+        <div class="entry-text">{{ s.text | md | safe }}</div>
+      </article>
+      {%- endfor %}
     </div>
-    {%- endfor %}
   </div>
   {%- endif %}
 </section>

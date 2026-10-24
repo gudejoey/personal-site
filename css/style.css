@@ -154,12 +154,41 @@ footer.site ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px var(
 .hero2 figure { margin: 0; }
 figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); margin-top: 8px; }
 
-.cues { display: grid; gap: var(--s4); }
-.cue { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s2); }
-.cue .margin { font-family: var(--mono); font-size: var(--s-1); color: var(--graphite); border-right: 1px solid var(--rule); padding-right: var(--s0); display: grid; gap: 4px; align-content: start; }
-.cue .margin b { color: var(--ink); font-weight: 500; font-size: 0.875rem; }
-.cue-body { min-width: 0; }
-.cue-body p { margin: 10px 0 0; line-height: 1.5; max-width: 38rem; }
+/* project timeline: a sticky rail of every section beside the sections themselves */
+.timeline { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s3); align-items: start; }
+.rail { position: sticky; top: var(--s2); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } } /* rail clicks glide to the section */
+.rail ol { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 1px solid var(--rule); display: grid; gap: 14px; }
+.rail a { display: grid; gap: 1px; background: none; color: var(--graphite); transition: color .2s ease; }
+.rail a:hover, .rail a[aria-current] { color: var(--ink); }
+.rail .when { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: .04em; }
+.rail .what { font-size: 0.875rem; line-height: 1.3; }
+.rail a[aria-current] .what { font-weight: 500; }
+.rail .marker { position: absolute; left: -3px; top: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--ink);
+  opacity: 0; transition: transform .35s cubic-bezier(.2,.7,.2,1), opacity .2s ease; }
+.rail .marker.shown { opacity: 1; }
+.entries { display: grid; gap: var(--s4); min-width: 0; }
+.entry { scroll-margin-top: var(--s2); min-width: 0; }
+.entry-head { display: grid; gap: 2px; margin-bottom: var(--s0); }
+.entry-head h3 { margin: 0; font: 400 1.5rem/1.15 var(--serif); letter-spacing: -0.01em; }
+.entry-text p { margin: var(--s0) 0 0; line-height: 1.55; max-width: 38rem; }
+
+/* reel: the lead frame shows one item at a time, thumbnails pick which */
+.reel .lead { display: grid; aspect-ratio: 3 / 2; max-height: 70vh; background: var(--mat); overflow: hidden; }
+.reel .slide { grid-area: 1 / 1; margin: 0; min-height: 0; opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility .4s; }
+.reel .slide.on { opacity: 1; visibility: visible; }
+.reel .slide button { all: unset; display: block; width: 100%; height: 100%; cursor: pointer; }
+.reel .slide button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.reel .slide img, .reel .slide video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.thumbs { display: flex; align-items: center; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+.thumb { all: unset; position: relative; flex: none; cursor: pointer; opacity: .5; transition: opacity .2s ease; }
+.thumb:hover, .thumb.on { opacity: 1; }
+.thumb.on { outline: 1.5px solid var(--ink); outline-offset: 2px; }
+.thumb:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.thumb img, .thumb video { display: block; height: 52px; width: auto; max-width: 96px; object-fit: cover; }
+.thumb .play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--paper); font-size: 12px; text-shadow: 0 1px 3px rgba(23, 22, 20, .6); }
+.thumbs .count { margin-left: auto; padding-left: var(--s0); white-space: nowrap; }
+.reel-cap { margin: 8px 0 0; }
 
 /* images/videos on project pages: one item shows at its own shape, several flow in two columns */
 .media figure { margin: 0; }
@@ -208,8 +237,8 @@ dialog.closing::backdrop, dialog.closing .cap { animation: fade-out .3s ease bot
   .projects { grid-template-columns: minmax(0, 1fr); }
   .gallery { columns: 2; }
   .media.many { columns: 1; }
-  .cue { grid-template-columns: minmax(0, 1fr); }
-  .cue .margin { border-right: 0; border-bottom: 1px solid var(--rule); padding: 0 0 8px; grid-auto-flow: column; justify-content: start; gap: 14px; }
+  .timeline { grid-template-columns: minmax(0, 1fr); }
+  .rail { display: none; }
   .mark svg { height: 2rem; }
   .lockup { gap: 14px; }
 }

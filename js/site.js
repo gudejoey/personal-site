@@ -37,7 +37,8 @@ async function openViewer(src, alt, thumb) {
   }
   const vimg = $("#vimg");
   vimg.src = src; vimg.alt = alt;
-  await vimg.decode().catch(() => {}); // know the final size before measuring
+  // know the final size before measuring; don't wait forever if decoding stalls
+  await Promise.race([vimg.decode().catch(() => {}), new Promise(r => setTimeout(r, 400))]);
   if (typeof dlg.showModal !== "function") return;
   dlg.showModal();
   origin = thumb || null;
@@ -87,11 +88,94 @@ function initLift(carousel) {
   });
 }
 
+/* A section's reel: thumbnails switch which item fills the lead frame (crossfade in CSS).
+   Videos only play while they are the active item and the reel is on screen. */
+function initReels(main) {
+  const reels = [...main.querySelectorAll(".reel")];
+  const playActive = reel => {
+    reel.querySelectorAll(".slide video").forEach(v => {
+      const on = v.closest(".slide").classList.contains("on") && reel.dataset.visible === "1" && !calm();
+      if (on) v.play().catch(() => {}); else v.pause();
+    });
+  };
+  for (const reel of reels) {
+    const slides = [...reel.querySelectorAll(".slide")], thumbs = [...reel.querySelectorAll(".thumb")];
+    const cap = $(".reel-cap", reel), n = $(".count .n", reel);
+    const show = i => {
+      slides.forEach((s, j) => {
+        s.classList.toggle("on", i === j);
+        s.toggleAttribute("aria-hidden", i !== j);
+        const b = $("button", s); if (b) b.tabIndex = i === j ? 0 : -1;
+      });
+      thumbs.forEach((t, j) => { t.classList.toggle("on", i === j); t.setAttribute("aria-pressed", i === j); });
+      cap.textContent = slides[i].dataset.caption || ""; cap.hidden = !cap.textContent;
+      if (n) n.textContent = i + 1;
+      playActive(reel);
+    };
+    thumbs.forEach((t, i) => {
+      t.addEventListener("click", () => show(i));
+      t.addEventListener("keydown", e => { // arrow keys step through the thumbnails
+        const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const j = (i + d + thumbs.length) % thumbs.length;
+        thumbs[j].focus(); show(j);
+      });
+    });
+  }
+  if (!reels.length || !("IntersectionObserver" in window)) return;
+  const seen = new IntersectionObserver(entries => entries.forEach(en => {
+    en.target.dataset.visible = en.isIntersecting ? "1" : "0";
+    playActive(en.target);
+  }), { threshold: 0.25 });
+  reels.forEach(r => seen.observe(r));
+}
+
+/* Timeline rail: highlights the section currently in view and slides the marker dot to it. */
+function initRail(main) {
+  const rail = $(".rail", main);
+  if (!rail) return;
+  const links = [...rail.querySelectorAll("a")], marker = $(".marker", rail);
+  const entries = links.map(a => main.querySelector(a.hash));
+  let current = -1, pinned = null; // pinned: a section picked on the rail, kept while scrolling there
+  const mark = i => {
+    if (i === current) return;
+    current = i;
+    links.forEach((l, j) => j === i ? l.setAttribute("aria-current", "true") : l.removeAttribute("aria-current"));
+    const a = links[i];
+    marker.style.transform = `translateY(${a.offsetTop + a.offsetHeight / 2 - marker.offsetHeight / 2}px)`;
+    marker.classList.add("shown");
+  };
+  const off = new AbortController(); // drops the window listeners below once this page is swapped away
+  const update = () => {
+    if (!rail.isConnected) { off.abort(); return; }
+    // current = the first section that still reaches below a line near the top of the screen
+    // (just under where rail jumps land, so short text-only sections count too)
+    const line = 80;
+    let i = entries.findIndex(e => e && e.getBoundingClientRect().bottom > line);
+    if (i < 0) i = entries.length - 1;
+    // the last sections may never reach that line, so at the very bottom trust the rail pick (or take the last)
+    const atBottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    if (pinned !== null && (atBottom || i === pinned)) i = pinned;
+    else if (atBottom) i = entries.length - 1;
+    mark(i);
+  };
+  let queued = false;
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; update(); }); } };
+  addEventListener("scroll", onScroll, { passive: true, signal: off.signal });
+  links.forEach((a, i) => a.addEventListener("click", () => { pinned = i; mark(i); }));
+  // the user scrolling on their own releases the rail pick
+  for (const ev of ["wheel", "touchmove", "keydown"]) addEventListener(ev, () => { pinned = null; }, { passive: true, signal: off.signal });
+  update();
+}
+
 // everything inside <main>; runs on first load and after every in-place navigation
 function initMain() {
   const main = $("main");
+  initReels(main);
+  initRail(main);
   // clicking any gallery, carousel or project image enlarges it
-  for (const box of main.querySelectorAll("#gallery, #carousel, .media")) {
+  for (const box of main.querySelectorAll("#gallery, #carousel, .media, .reel .lead")) {
     box.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
       const img = $("img", b), src = img.getAttribute("src");
@@ -154,12 +238,20 @@ async function go(url, push) {
   } else swap();
 }
 
+let shownPath = location.pathname; // page whose <main> is on screen
+
 document.addEventListener("click", e => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const a = e.target.closest("a");
   if (!isPage(a)) return;
+  if (a.pathname === location.pathname && a.hash) return; // jump within this page (e.g. the timeline rail): let the browser scroll
   e.preventDefault();
   if (a.href === location.href) return;
+  shownPath = a.pathname;
   go(a.href, true);
 });
-window.addEventListener("popstate", () => go(location.href, false));
+window.addEventListener("popstate", () => {
+  if (location.pathname === shownPath) return; // only the #hash changed; the browser handles that scroll
+  shownPath = location.pathname;
+  go(location.href, false);
+});
