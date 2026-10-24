@@ -24,6 +24,8 @@ sections:
         alt: Black hole projection
       - file: img/stage-signs-1.jpg
         alt: Crowded speech projection
+      - file: img/MathAnim.png
+        alt: Math animation projection
   - label: Show
     title: Dracula
     meta: "2025"
@@ -31,6 +33,13 @@ sections:
     media:
       - file: img/stage-wall-1.jpg
         alt: Actors walking down projected stairs.
+      - file: img/NormalStairs.png
+        alt: 3D render of classic stairs
+      - file: img/SnakeStairs.png
+        alt: 3D render of snake-like stairs
+      - file: img/SpiralStairs.png
+        alt: 3D render of spiral stairs
+      - alt: Video of actors walking down
   - label: Show
     title: Noises Off
     meta: "2025"
