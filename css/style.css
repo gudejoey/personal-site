@@ -49,11 +49,16 @@ nav.site { padding-top: 0.2rem; }
 .namerow { display: flex; align-items: center; gap: 12px; }
 .mark { flex: none; display: block; }
 .mark svg { height: 2.6rem; width: auto; aspect-ratio: 120 / 103; display: block; fill: currentColor; overflow: visible; }
-/* the face blinks and its nose twitches now and then, at random moments (scheduled in site.js) */
-.face .eye { transform-box: fill-box; transform-origin: center; }
+/* the face blinks on a 7s cycle (one blink, then a double blink); the nose twitches at random
+   moments between blinks (scheduled in site.js) */
+.face .eye { transform-box: fill-box; transform-origin: center; animation: blink 7s infinite; }
 /* pivot sits at the right, where the nose meets the face, so only the tip moves */
 .face .snout { transform-box: fill-box; transform-origin: 84% 25%; }
 .face .snout.poke { animation: poke .5s; }
+@keyframes blink {
+  0%, 39%, 42.8%, 86%, 89.2%, 90.4%, 93.6%, 100% { transform: none; }
+  40.9%, 87.6%, 92% { transform: scaleY(.1); }
+}
 @keyframes poke {
   0%, 100% { transform: none; }
   15% { transform: rotate(6deg); }
@@ -61,7 +66,7 @@ nav.site { padding-top: 0.2rem; }
   55% { transform: rotate(5deg); }
   75% { transform: rotate(-1deg); }
 }
-@media (prefers-reduced-motion: reduce) { .face .snout.poke { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .face .eye, .face .snout.poke { animation: none; } }
 .id { flex: 1; min-width: 0; }
 .name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 3.6vw, 2.4rem); line-height: 1; margin: 0; letter-spacing: -0.015em; font-style: italic; }
 .name a { text-decoration: none; }
@@ -186,7 +191,6 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .thumbs { display: flex; align-items: center; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
 .thumb { all: unset; position: relative; flex: none; cursor: pointer; opacity: .5; transition: opacity .2s ease; }
 .thumb:hover, .thumb.on { opacity: 1; }
-.thumb.on { outline: 1.5px solid var(--ink); outline-offset: 2px; }
 .thumb:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .thumb img, .thumb video { display: block; height: 52px; width: auto; max-width: 96px; object-fit: cover; }
 .thumb .play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--paper); font-size: 12px; text-shadow: 0 1px 3px rgba(23, 22, 20, .6); }

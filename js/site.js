@@ -216,32 +216,28 @@ if (snout) {
   snout.addEventListener("animationend", e => { if (e.animationName === "poke") snout.classList.remove("poke"); });
 }
 
-/* Idle life for the face: blinks and nose twitches on their own random timers, so they never
-   settle into a rhythm or keep landing together. */
-const eyes = [...document.querySelectorAll(".face .eye")];
-if (snout && eyes.length && !calm()) {
+/* Idle nose twitches at random moments. The eyes blink on a fixed 7s CSS cycle (a blink around
+   2.7-3.0s, a double blink around 6.0-6.6s), so twitches wait for a quiet stretch of that cycle
+   and never land on a blink. */
+const eye = $(".face .eye");
+if (snout && eye && !calm()) {
   const rand = (min, max) => min + Math.random() * (max - min);
-  let lastBlink = 0;
-  const shut = { transform: "scaleY(.1)" }, open = { transform: "none" };
-
-  const blink = () => {
-    // now and then a quick double blink
-    const frames = Math.random() < 0.25 ? [open, shut, open, open, shut, open] : [open, shut, open];
-    eyes.forEach(e => e.animate(frames, { duration: frames.length > 3 ? 520 : 240, easing: "ease-in-out" }));
-    lastBlink = performance.now();
-    setTimeout(blink, rand(2800, 7500));
+  const nearBlink = () => {
+    const t = eye.getAnimations()[0]?.currentTime;
+    if (t == null) return false;
+    const s = (t / 1000) % 7; // seconds into the blink cycle
+    return (s > 2.0 && s < 3.7) || s > 5.3 || s < 0.25;
   };
 
   const twitch = () => {
-    // skip if a blink just happened or the click "poke" is playing, and try again a little later
-    if (performance.now() - lastBlink < 700 || snout.classList.contains("poke")) { setTimeout(twitch, rand(500, 1200)); return; }
+    // wait out a blink or the click "poke", then try again shortly
+    if (nearBlink() || snout.classList.contains("poke")) { setTimeout(twitch, rand(300, 700)); return; }
     const a = rand(4, 6), b = a * rand(0.6, 0.8);
     snout.animate([{ transform: "none" }, { transform: `rotate(${a}deg)`, offset: 0.25 }, { transform: "none", offset: 0.5 },
       { transform: `rotate(${b}deg)`, offset: 0.72 }, { transform: "none" }], { duration: rand(280, 360), easing: "ease-out" });
     setTimeout(twitch, rand(4500, 10000));
   };
 
-  setTimeout(blink, rand(1200, 3500));
   setTimeout(twitch, rand(2500, 6000));
 }
 
