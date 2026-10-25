@@ -22,7 +22,7 @@ sections:
     media:
       - file: img/stage-funnel.jpg
         alt: Black hole projection
-      - file: img/stage-signs-1.jpg
+      - file: img/stage-signs.jpg
         alt: Crowded speech projection
       - file: img/MathAnim.png
         alt: Math animation projection
