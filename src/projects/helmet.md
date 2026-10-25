@@ -14,18 +14,18 @@ media:
   - file: img/helmet.jpg
     alt: Man in a dark suit wearing the finished silver helmet and gloves
     caption: Final costume
-  - file: img/IMG_3288.jpg
-    alt: Vacuum forming the plastic around the mold
-    caption: Vacuum forming the plastic around the mold
   - file: img/IMG_3125.jpg
     alt: Assembled helmet before epoxy
     caption: The assembled helmet before epoxy
+  - file: img/IMG_3288.jpg
+    alt: Vacuum forming the plastic around the mold
+    caption: Successfully vacuum forming the plastic around the mold
   - {}
 ---
 We started from models we found online. After printing came the finishing: gluing the sections together, coating them in epoxy and body filler, and sanding.
 
-For the visor, we built our own vacuum former out of two sheets of plywood to melt and form sheets of plastic.
+For the visor, we built our own vacuum former out of perforated hardboard, tape, and a shop vacuum. We then built a frame to hold the sheets of plastic to melt in the oven. The real challenge was not screwing up with our limited supply of three plastic sheets, meaning we got a total of three tries. Luckily enough, we succeeded on the last.
 
-I also tried to build a vocoder into the helmet, with breadboards as voice filters. It broke before Halloween.
+I also tried to build and program a vocoder into the helmet using an esp32. It worked decently well, but unfortunately broke the night before Halloween.
 
-<p class="muted"><span class="fill">One or two sentences: what you'd do differently next time.</span></p>
+
