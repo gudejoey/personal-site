@@ -3,13 +3,28 @@ layout: base.njk
 permalink: index.html
 nav: work
 ---
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-name">{{ site.name }}</h1>
+    <p class="hero-tag">{{ site.tagline }}</p>
+  </div>
+  {#- a photo of you, set in Site settings; until then a placeholder holds its place #}
+  <figure class="hero-photo{% if not site.photo %} placeholder{% endif %}">
+    {%- if site.photo %}
+    <img src="{{ site.photo | asset }}" alt="{{ site.photo_alt or ('Photo of ' + site.name) }}" sizes="(max-width: 600px) 70vw, 30vw" loading="eager">
+    {%- else %}
+    <span class="mono muted">Photo of {{ site.name }}</span>
+    {%- endif %}
+  </figure>
+</section>
+
 <section>
   <div class="sechead"><h2>Projects</h2><span class="mono muted">{{ collections.projects.length }}</span></div>
   {#- each column is as wide as its cover's aspect ratio, so all covers line up at one height #}
   <div class="projects" style="--cols:{% for p in collections.projects %} {{ p.data.cover_ratio | ratio }}fr{% endfor %}">
     {%- for p in collections.projects %}
     <a class="plate" href="{{ p.page.fileSlug }}.html">
-      <div class="frame" style="aspect-ratio: {{ p.data.cover_ratio }}"><img src="{{ p.data.cover | asset }}" alt="{{ p.data.cover_alt }}" sizes="(max-width: 600px) 100vw, 560px" loading="eager">{% if p.data.note %}<span class="note">{{ p.data.note }}</span>{% endif %}</div>
+      <div class="frame" style="aspect-ratio: {{ p.data.cover_ratio }}"><img src="{{ p.data.cover | asset }}" alt="{{ p.data.cover_alt }}" sizes="(max-width: 600px) 100vw, 45vw" loading="eager">{% if p.data.note %}<span class="note">{{ p.data.note }}</span>{% endif %}</div>
       <div class="label"><span class="pl">Pl. {{ loop.index }}</span><span class="t"><b class="hl">{{ p.data.card_title or p.data.title }}</b></span></div>
     </a>
     {%- endfor %}

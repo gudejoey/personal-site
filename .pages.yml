@@ -202,7 +202,18 @@ content:
     fields:
       - name: name
         type: string
+        description: Shown large in the hero at the top of the Work page.
       - name: tagline
+        type: string
+        description: Shown under your name in the hero.
+      - name: photo
+        label: Hero photo
+        type: image
+        description: Shown to the right of your name; cropped to a 4:5 portrait. Leave empty for the placeholder.
+        options:
+          media: images
+      - name: photo_alt
+        label: Photo description (for screen readers)
         type: string
       - name: email
         type: string

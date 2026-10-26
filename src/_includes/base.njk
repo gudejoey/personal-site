@@ -7,27 +7,19 @@
 {% include "favicon.njk" %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;1,400&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Tinos:ital,wght@0,400;1,400&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="css/style.css?v={{ build.version }}">
 </head>
 <body>
 <div class="wrap">
   <header class="site">
-    <div class="lockup">
-      <div class="id">
-        <div class="top">
-          <div class="namerow">
-            <h1 class="name"><a href="index.html">{{ site.name }}</a></h1>
-            <a class="mark" href="index.html" aria-hidden="true" tabindex="-1">{% include "face.njk" %}</a>
-          </div>
-          <nav class="site" aria-label="Main">
-            {%- for item in [["work", "index.html", "Work"], ["gallery", "gallery.html", "Gallery"], ["about", "about.html", "About"]] %}
-            <a href="{{ item[1] }}"{% if nav == item[0] %} aria-current="page"{% endif %}>{{ item[2] }}</a>
-            {%- endfor %}
-          </nav>
-        </div>
-        <p class="tag">{{ site.tagline }}</p>
-      </div>
+    <div class="bar">
+      <a class="mark" href="index.html" aria-label="{{ site.name }}, home">{% include "face.njk" %}</a>
+      <nav class="site" aria-label="Main">
+        {%- for item in [["work", "index.html", "Work"], ["gallery", "gallery.html", "Gallery"], ["about", "about.html", "About"]] %}
+        <a href="{{ item[1] }}"{% if nav == item[0] %} aria-current="page"{% endif %}>{{ item[2] }}</a>
+        {%- endfor %}
+      </nav>
     </div>
   </header>
 
