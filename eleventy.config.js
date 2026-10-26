@@ -1,9 +1,9 @@
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 
 export default function (eleventyConfig) {
-  // static assets are copied to the output as they are (src/img holds uploads, including videos)
+  // static assets are copied to the output as they are (src/img: image uploads, src/mov: videos)
   for (const dir of ["svg", "css", "js"]) eleventyConfig.addPassthroughCopy(dir);
-  eleventyConfig.addPassthroughCopy({ "src/img": "img" });
+  eleventyConfig.addPassthroughCopy({ "src/img": "img", "src/mov": "mov" });
 
   // Every <img> in the built pages is resized into small WebP copies (400/800/1600px wide, never
   // upscaled) and given a srcset, so browsers download only the size they need. Templates write
@@ -40,8 +40,11 @@ export default function (eleventyConfig) {
 
   // media lists can hold images or videos; decide by file extension
   eleventyConfig.addFilter("isVideo", f => /\.(mp4|webm|mov|m4v)$/i.test(f || ""));
-  // drops media entries that have no file yet (e.g. a half-filled CMS row)
-  eleventyConfig.addFilter("withFile", items => (items || []).filter(m => m && m.file));
+  // a media row holds an image (`file`) or a video (`video`, which wins if both are set);
+  // rows with neither yet (e.g. a half-filled CMS row) are dropped
+  eleventyConfig.addFilter("withFile", items => (items || [])
+    .map(m => (m && m.video ? { ...m, file: m.video } : m))
+    .filter(m => m && m.file));
 
   // "3 / 2" -> 1.5, used to size project columns so every cover image shares one height
   eleventyConfig.addFilter("ratio", r => {

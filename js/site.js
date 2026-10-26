@@ -92,6 +92,8 @@ function initLift(carousel) {
    Videos only play while they are the active item and the reel is on screen. */
 function initReels(main) {
   const reels = [...main.querySelectorAll(".reel")];
+  // every video on the site is silent; being muted is also what lets browsers autoplay it
+  main.querySelectorAll(".reel video").forEach(v => { v.muted = true; v.defaultMuted = true; });
   const playActive = reel => {
     reel.querySelectorAll(".slide video").forEach(v => {
       const on = v.closest(".slide").classList.contains("on") && reel.dataset.visible === "1" && !calm();
@@ -204,6 +206,12 @@ function initMain() {
 }
 initMain();
 initCopy($("footer.site"));
+
+// discourage saving images and videos: no right-click menu or dragging them out of the page
+// (this stops casual saving only; anything shown on a web page can still be captured)
+for (const ev of ["contextmenu", "dragstart"]) {
+  document.addEventListener(ev, e => { if (e.target.closest?.("img, video")) e.preventDefault(); });
+}
 
 // clicking the face makes the nose twitch (the header survives navigation, so it plays either way)
 const snout = $(".face .snout");

@@ -1,9 +1,16 @@
 # Pages CMS (https://pagescms.org): editing forms for the site's content.
 # Each save commits to GitHub, which rebuilds and republishes the site.
 media:
-  input: src/img
-  output: img
-  categories: [image, video]
+  - name: images
+    label: Images
+    input: src/img
+    output: img
+    categories: [image]
+  - name: videos
+    label: Videos
+    input: src/mov
+    output: mov
+    categories: [video]
 
 content:
   - name: projects
@@ -53,10 +60,17 @@ content:
         list: true
         fields:
           - name: file
-            label: Image or video
-            type: file
+            label: Image
+            type: image
             options:
-              categories: [image, video]
+              media: images
+          - name: video
+            label: Video (use instead of an image)
+            type: file
+            description: Plays silently on a loop. Keep it short and under ~20 MB.
+            options:
+              media: videos
+              categories: [video]
           - name: alt
             label: Description (for screen readers)
             type: string
@@ -96,10 +110,17 @@ content:
             list: true
             fields:
               - name: file
-                label: Image or video
-                type: file
+                label: Image
+                type: image
                 options:
-                  categories: [image, video]
+                  media: images
+              - name: video
+                label: Video (use instead of an image)
+                type: file
+                description: Plays silently on a loop. Keep it short and under ~20 MB.
+                options:
+                  media: videos
+                  categories: [video]
               - name: alt
                 label: Description (for screen readers)
                 type: string
