@@ -1,10 +1,57 @@
 [
-  { "image": "img/grease.jpg", "alt": "Pink neon Grease poster set at a diner counter with showtimes and ticket QR code", "featured": true },
-  { "image": "img/cat.jpg", "alt": "Tabby and white cat sniffing a white orchid in window light", "featured": true },
-  { "image": "img/lmp.jpg", "alt": "Night street with a streetlamp whose light cone forms the letter A between L, M and P", "featured": false },
-  { "image": "img/moped.jpg", "alt": "Boy with a red scarf riding on the back of a scooter in low evening sun", "featured": true },
-  { "image": "img/spring.jpg", "alt": "Green hills of grass with the word SPRING emerging from them and a child flying a kite", "featured": true },
-  { "image": "img/roses.jpg", "alt": "Pink roses against a deep blue sky, shot through a soft foreground blur", "featured": true },
-  { "image": "img/noexit.jpg", "alt": "Green poster with two eyes, arrow-shaped trees and the exit-sign running figure above the word EXIT", "featured": true },
-  { "image": "img/greens.jpg", "alt": "Young boy with a red scarf carrying a large bunch of greens across a sidewalk", "featured": false }
+  {
+    "image": "img/grease.jpg",
+    "alt": "Pink neon Grease poster set at a diner counter with showtimes and ticket QR code",
+    "featured": true
+  },
+  {
+    "image": "img/cat.jpg",
+    "alt": "Tabby and white cat sniffing a white orchid in window light",
+    "featured": true
+  },
+  {
+    "image": "img/lmp.jpg",
+    "alt": "Night street with a streetlamp whose light cone forms the letter A between L, M and P",
+    "featured": false
+  },
+  {
+    "image": "img/moped.jpg",
+    "alt": "Boy with a red scarf riding on the back of a scooter in low evening sun",
+    "featured": true
+  },
+  {
+    "image": "img/spring.jpg",
+    "alt": "Green hills of grass with the word SPRING emerging from them and a child flying a kite",
+    "featured": true
+  },
+  {
+    "image": "img/Blossomed.jpg",
+    "alt": "Pink roses against a deep blue sky, shot through a soft foreground blur",
+    "featured": true
+  },
+  {
+    "image": "img/noexit.jpg",
+    "alt": "Green poster with two eyes, arrow-shaped trees and the exit-sign running figure above the word EXIT",
+    "featured": true
+  },
+  {
+    "image": "img/greens.jpg",
+    "alt": "Young boy with a red scarf carrying a large bunch of greens across a sidewalk",
+    "featured": false
+  },
+  {
+    "image": "img/东方明珠.png",
+    "alt": "Oriental pearl poster",
+    "featured": true
+  },
+  {
+    "image": "img/Icarus4.png",
+    "alt": "Icarus poster",
+    "featured": true
+  },
+  {
+    "image": "img/_MG_1126.jpg",
+    "alt": "A burger and fries",
+    "featured": true
+  }
 ]
