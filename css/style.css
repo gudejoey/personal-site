@@ -43,18 +43,16 @@ img, video { -webkit-user-drag: none; user-select: none; -webkit-user-select: no
 .fill { background: var(--note); padding: 0 4px; font-family: var(--mono); font-size: 0.85em; border-radius: 2px; white-space: nowrap; }
 
 header.site { position: relative; padding-block: 10px; }
-/* page-wide rules: the header, section heads and footer lines reach past the side padding to both
-   edges of the window (exactly the body's padding, so they never cause sideways scrolling) */
-header.site::after, .sechead::before, footer.site::before {
-  content: ""; position: absolute; height: 1px; background: var(--ink);
+/* page-wide rules: the section-head and footer lines reach past the side padding to both edges of the
+   window (exactly the body's padding, so they never cause sideways scrolling); a soft grey, not ink */
+.sechead::before, footer.site::before {
+  content: ""; position: absolute; top: 0; height: 1px; background: color-mix(in srgb, var(--graphite) 45%, var(--paper));
   left: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px)));
   right: calc(-1 * max(var(--gutter), env(safe-area-inset-right, 0px))); }
-header.site::after { bottom: 0; }
-.sechead::before, footer.site::before { top: 0; }
-/* every page starts the same distance under the header rule */
+/* every page starts the same distance under the header */
 main > section > :first-child { margin-top: var(--s2); }
-/* standalone pages (Gallery, About) get more breathing room above and below their content */
-main > section.page { padding-block: clamp(1.5rem, 6vh, 4.5rem) clamp(1rem, 4vh, 3rem); }
+/* standalone pages (Gallery, About) get a little more room below their content */
+main > section.page { padding-bottom: clamp(1rem, 4vh, 3rem); }
 main > section > .sechead:first-child { padding-top: 0; }
 main > section > .sechead:first-child::before { content: none; }
 /* the rule under the hero starts the Projects section */
