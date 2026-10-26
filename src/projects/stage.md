@@ -73,9 +73,15 @@ sections:
   - label: Show
     title: Mouthwashing
     meta: "2026"
-    text: Created slideshow of images
+    text: >
+      Designed slideshow of graphics as a live website with host and viewer
+      permissions. The viewer view is the direct project, and the host view
+      controls the slideshow.
     media:
       - file: img/IMG_3315.jpg
         alt: "CRT TVs representing ship monitors "
         caption: "CRT TVs representing ship monitors "
+      - video: mov/mouthwashing.mov
+        alt: Projections displayed on cluster of CRT TVs
+        caption: Projections displayed on cluster of CRT TVs
 ---
