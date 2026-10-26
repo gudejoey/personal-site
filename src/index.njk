@@ -20,10 +20,11 @@ nav: work
 
 <section>
   <div class="sechead"><h2>Projects</h2><span class="mono muted">{{ collections.projects.length }}</span></div>
-  {#- each column is as wide as its cover's aspect ratio, so all covers line up at one height #}
-  <div class="projects" style="--cols:{% for p in collections.projects %} {{ p.data.cover_ratio | ratio }}fr{% endfor %}">
+  {#- each cover is as wide as its aspect ratio (--r), so covers in a row share one height; when the
+      window gets too narrow to keep them a decent size, they wrap onto a new row #}
+  <div class="projects">
     {%- for p in collections.projects %}
-    <a class="plate" href="{{ p.page.fileSlug }}.html">
+    <a class="plate" href="{{ p.page.fileSlug }}.html" style="--r: {{ p.data.cover_ratio | ratio }}">
       <div class="frame" style="aspect-ratio: {{ p.data.cover_ratio }}"><img src="{{ p.data.cover | asset }}" alt="{{ p.data.cover_alt }}" sizes="(max-width: 600px) 100vw, 45vw" loading="eager">{% if p.data.note %}<span class="note">{{ p.data.note }}</span>{% endif %}</div>
       <div class="label"><span class="pl">Pl. {{ loop.index }}</span><span class="t"><b class="hl">{{ p.data.card_title or p.data.title }}</b></span></div>
     </a>

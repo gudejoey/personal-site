@@ -190,7 +190,7 @@ function initGallery(main) {
   // work out every tile's box for the current width
   const layout = () => {
     const W = g.clientWidth, gap = parseFloat(getComputedStyle(g).rowGap) || 16;
-    const target = W < 600 ? 150 : W < 860 ? 210 : 260; // row height to aim for
+    const target = W < 600 ? 200 : W < 860 ? 230 : 260; // row height to aim for; kept generous on small screens so images stay a usable size
     const boxes = new Map();
     let y = 0, row = [];
     const place = (list, h) => {
@@ -198,10 +198,17 @@ function initGallery(main) {
       list.forEach((it, i) => { boxes.set(it.t, { x, y, w: it.r * h, h, i }); x += it.r * h + gap; });
       y += h + gap;
     };
+    const heightOf = list => (W - gap * (list.length - 1)) / list.reduce((s, x) => s + x.r, 0); // to fill the width
     for (const it of items) {
-      row.push(it);
-      const sum = row.reduce((s, x) => s + x.r, 0), free = W - gap * (row.length - 1);
-      if (sum * target >= free) { place(row, free / sum); row = []; }
+      const withIt = [...row, it];
+      if (heightOf(withIt) > target) { row = withIt; continue; } // still room: keep filling this row
+      // adding this image would make the row shorter than the target; end the row wherever its
+      // height lands closer to the target (with it, or before it), so images never get tiny
+      if (row.length && Math.abs(heightOf(row) - target) < Math.abs(heightOf(withIt) - target)) {
+        place(row, heightOf(row)); row = [it];
+      } else {
+        place(withIt, heightOf(withIt)); row = [];
+      }
     }
     if (row.length) { // an unfinished last row keeps its natural height unless it's nearly full
       const sum = row.reduce((s, x) => s + x.r, 0), free = W - gap * (row.length - 1);
