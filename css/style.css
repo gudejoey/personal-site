@@ -16,7 +16,7 @@
   --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
   --s-1: 0.75rem; --s0: 1rem; --s1: 1.125rem; --s2: 1.5rem; --s3: 2.25rem; --s4: 3.5rem; --s5: 5rem;
   --wrap: none; /* full width; the side padding below keeps content off the edges */
-  --gutter: clamp(20px, 6.5vw, 120px);
+  --gutter: clamp(24px, 8vw, 150px);
 }
 * { box-sizing: border-box; }
 body { margin: 0;
@@ -42,7 +42,7 @@ img, video { -webkit-user-drag: none; user-select: none; -webkit-user-select: no
 
 .fill { background: var(--note); padding: 0 4px; font-family: var(--mono); font-size: 0.85em; border-radius: 2px; white-space: nowrap; }
 
-header.site { position: relative; padding-block: 10px; }
+header.site { position: relative; padding-block: 18px 10px; }
 /* page-wide rules: the section-head and footer lines reach past the side padding to both edges of the
    window (exactly the body's padding, so they never cause sideways scrolling); a soft grey, not ink */
 .sechead::before, footer.site::before {
@@ -51,8 +51,6 @@ header.site { position: relative; padding-block: 10px; }
   right: calc(-1 * max(var(--gutter), env(safe-area-inset-right, 0px))); }
 /* every page starts the same distance under the header */
 main > section > :first-child { margin-top: var(--s2); }
-/* standalone pages (Gallery, About) get a little more room below their content */
-main > section.page { padding-bottom: clamp(1rem, 4vh, 3rem); }
 main > section > .sechead:first-child { padding-top: 0; }
 main > section > .sechead:first-child::before { content: none; }
 /* the rule under the hero starts the Projects section */
@@ -61,7 +59,7 @@ main > section > .sechead:first-child::before { content: none; }
 /* the header is just the mouse face (the home link) and the nav */
 header.site .bar { display: flex; justify-content: space-between; align-items: center; gap: var(--s0) var(--s3); }
 .mark { flex: none; display: block; }
-.mark svg { height: 1.9rem; width: auto; aspect-ratio: 120 / 103; display: block; fill: currentColor; overflow: visible; }
+.mark svg { height: 2.2rem; width: auto; aspect-ratio: 120 / 103; display: block; fill: currentColor; overflow: visible; }
 /* the face blinks on a 7s cycle (one blink, then a double blink); the nose twitches at random
    moments between blinks (scheduled in site.js) */
 .face .eye { transform-box: fill-box; transform-origin: center; animation: blink 7s infinite; }
@@ -277,7 +275,7 @@ dialog.closing::backdrop, dialog.closing .cap { animation: fade-out .3s ease bot
   .gallery { --row: 200px; }
   .timeline { grid-template-columns: minmax(0, 1fr); }
   .rail { display: none; }
-  .mark svg { height: 1.7rem; }
+  .mark svg { height: 1.9rem; }
   .hero { grid-template-columns: minmax(0, 1fr); align-content: center; gap: var(--s2); min-height: 0; padding-inline: 0; }
   .hero-photo { width: min(70%, 280px); }
 }
