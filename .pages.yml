@@ -137,6 +137,8 @@ content:
       - name: image
         type: image
         required: true
+        options:
+          media: images
       - name: alt
         label: Description (for screen readers)
         type: string

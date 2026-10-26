@@ -177,6 +177,99 @@ function initRail(main) {
   update();
 }
 
+/* Gallery: justified rows. Tiles are packed left to right into rows that exactly fill the width;
+   each row's height comes from the shapes of its images, so nothing is cropped and every image is
+   treated the same. Motion is kept to transform and opacity (GPU-friendly): while the window is being
+   dragged the layout simply follows it; a one-off size change (e.g. rotating a phone) glides into place. */
+function initGallery(main) {
+  const g = $("#gallery", main);
+  if (!g) return;
+  const tiles = [...g.querySelectorAll(".tile")];
+  const items = tiles.map(t => ({ t, r: parseFloat(getComputedStyle(t).getPropertyValue("--r")) || 1 }));
+
+  // work out every tile's box for the current width
+  const layout = () => {
+    const W = g.clientWidth, gap = parseFloat(getComputedStyle(g).rowGap) || 16;
+    const target = W < 600 ? 150 : W < 860 ? 210 : 260; // row height to aim for
+    const boxes = new Map();
+    let y = 0, row = [];
+    const place = (list, h) => {
+      let x = 0;
+      list.forEach((it, i) => { boxes.set(it.t, { x, y, w: it.r * h, h, i }); x += it.r * h + gap; });
+      y += h + gap;
+    };
+    for (const it of items) {
+      row.push(it);
+      const sum = row.reduce((s, x) => s + x.r, 0), free = W - gap * (row.length - 1);
+      if (sum * target >= free) { place(row, free / sum); row = []; }
+    }
+    if (row.length) { // an unfinished last row keeps its natural height unless it's nearly full
+      const sum = row.reduce((s, x) => s + x.r, 0), free = W - gap * (row.length - 1);
+      place(row, sum * target >= free * 0.75 ? free / sum : target);
+    }
+    return { boxes, height: Math.max(0, y - gap), W };
+  };
+
+  const apply = ({ boxes, height }) => {
+    for (const [t, b] of boxes) {
+      t.getAnimations().forEach(an => { if (an.id === "glide") an.cancel(); }); // a snap overrides any glide in progress
+      Object.assign(t.style, { width: `${b.w}px`, height: `${b.h}px`, transform: `translate3d(${b.x}px, ${b.y}px, 0)` });
+      t.style.setProperty("--delay", `${Math.min(b.i * 60, 300)}ms`); // reveal sweeps left to right along each row
+    }
+    g.style.height = `${height}px`;
+  };
+
+  // glide from the old boxes to the new ones by animating transform only (FLIP)
+  const glide = next => {
+    const before = new Map(tiles.map(t => [t, t.getBoundingClientRect()]));
+    apply(next);
+    for (const t of tiles) {
+      const a = before.get(t), b = t.getBoundingClientRect();
+      if (!b.width || (Math.abs(a.left - b.left) < 1 && Math.abs(a.top - b.top) < 1 && Math.abs(a.width - b.width) < 1)) continue;
+      const end = t.style.transform;
+      t.animate([
+        { transform: `translate3d(${a.left - b.left}px, ${a.top - b.top}px, 0) ${end} scale(${a.width / b.width}, ${a.height / b.height})`, transformOrigin: "0 0" },
+        { transform: end, transformOrigin: "0 0" }
+      ], { id: "glide", duration: 520, easing: "cubic-bezier(.16, 1, .3, 1)" });
+    }
+  };
+
+  g.classList.add("packed");
+  let current = layout();
+  apply(current);
+
+  let queued = false, lastResize = 0;
+  const off = new AbortController(); // stops listening once this page is swapped away
+  const onResize = () => {
+    if (!g.isConnected) { ro.disconnect(); off.abort(); return; }
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      const next = layout();
+      if (Math.abs(next.W - current.W) < 0.5) return;
+      const now = performance.now(), dragging = now - lastResize < 200;
+      lastResize = now;
+      current = next;
+      if (dragging || calm()) apply(next); else glide(next);
+    });
+  };
+  const ro = new ResizeObserver(onResize);
+  ro.observe(g);
+  addEventListener("resize", onResize, { signal: off.signal });
+
+  // tiles drift up and fade in as they scroll into view
+  if (calm() || !("IntersectionObserver" in window)) return;
+  g.classList.add("reveal");
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    io.unobserve(e.target);
+    setTimeout(() => e.target.classList.add("settled"), 1600); // reveal done: hover fades react immediately
+  }), { rootMargin: "0px 0px -6% 0px" });
+  tiles.forEach(t => io.observe(t));
+}
+
 // biggest file in an image's srcset (the page itself shows a smaller one); falls back to src
 function largest(img) {
   const best = (img.getAttribute("srcset") || "").split(",")
@@ -190,6 +283,7 @@ function initMain() {
   const main = $("main");
   initReels(main);
   initRail(main);
+  initGallery(main);
   // clicking any gallery, carousel or project image enlarges it
   for (const box of main.querySelectorAll("#gallery, #carousel, .reel .lead")) {
     box.addEventListener("click", e => {

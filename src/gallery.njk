@@ -6,9 +6,11 @@ title: Gallery
 ---
 <section>
   <h2 class="ptitle" style="margin-bottom:var(--s2);">Gallery</h2>
+  {#- Justified rows: each tile knows its image's shape (--r = width ÷ height). site.js packs the tiles
+      into rows that fill the width exactly; without JavaScript, the CSS flex fallback still lays them out in rows. #}
   <div class="gallery" id="gallery">
     {%- for p in gallery %}
-    <button type="button" aria-label="Enlarge image"><img src="{{ p.image | asset }}" alt="{{ p.alt }}" sizes="(max-width: 600px) 50vw, (max-width: 860px) 33vw, 300px"></button>
+    <button type="button" class="tile" style="--r: {{ imageRatios[p.image] or 1 }}" aria-label="Enlarge image"><img src="{{ p.image | asset }}" alt="{{ p.alt }}" sizes="(max-width: 600px) 100vw, 500px"></button>
     {%- endfor %}
   </div>
 </section>
