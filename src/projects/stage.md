@@ -74,14 +74,18 @@ sections:
     title: Mouthwashing
     meta: "2026"
     text: >
-      Designed slideshow of graphics as a live website with host and viewer
-      permissions. The viewer view is the direct project, and the host view
-      controls the slideshow.
+      Designed slideshow of graphics as a [live
+      website](https://burgerburger.lol) with host and viewer interfaces. The
+      viewer interface is only the graphic, meant to be projected on the TV. The
+      host interface has the presenter view and controls the slideshow, which
+      updates the viewer end using a server. This allows the director to
+      remotely control the projections from behind the stage. 
     media:
-      - file: img/IMG_3315.jpg
-        alt: "CRT TVs representing ship monitors "
-        caption: "CRT TVs representing ship monitors "
       - video: mov/mouthwashing.mp4
         alt: Projections displayed on cluster of CRT TVs
         caption: Projections displayed on cluster of CRT TVs
+      - file: img/IMG_3315.jpg
+        video: mov/mouthwashing.mp4
+        alt: "CRT TVs representing ship monitors "
+        caption: "The cluster of CRT TVs as ship monitors "
 ---
