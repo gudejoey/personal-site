@@ -165,7 +165,8 @@ footer.site ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px var(
 .ptitle { font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.015em; margin: var(--s2) 0 var(--s0); text-wrap: balance; }
 /* Gallery and About titles use the hero name's display face (Cormorant Garamond Light italic);
    a little larger, since its letters run small */
-.ptitle.display { font: italic 300 clamp(2.2rem, 4.4vw, 3.4rem)/1 "Cormorant Garamond", var(--serif); letter-spacing: -0.025em; }
+.ptitle.display { font: italic 300 clamp(2.2rem, 4.4vw, 3.4rem)/1 "Cormorant Garamond", var(--serif); letter-spacing: -0.025em;
+  margin-bottom: clamp(2rem, 4.5vh, 3rem); /* a little more room before the page content */ }
 .back + .ptitle { margin-top: var(--s0); }
 .lede { font-size: var(--s1); line-height: 1.45; max-width: 40rem; margin: 0 0 var(--s3); text-wrap: pretty; }
 .prose { max-width: 38rem; }
