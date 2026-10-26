@@ -7,9 +7,8 @@ cover_alt: Man in a dark suit wearing a silver 3D-printed Daft Punk helmet and
   gloves on a sidewalk
 cover_ratio: 3 / 4
 note: Custom-built helmet for Halloween.
-lede: A friend and I built a Daft Punk costume for Halloween. We 3D-printed,
-  glued, sanded, epoxied, bondo-ed, and spray painted, and made our own vacuum
-  former for the visor. I also tried to build a vocoder into it.
+lede: "A friend and I built a Daft Punk costume for Halloween in 2025 as a duo
+  outfit. "
 media:
   - file: img/helmet.jpg
     alt: Man in a dark suit wearing the finished silver helmet and gloves
