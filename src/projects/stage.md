@@ -75,5 +75,7 @@ sections:
     meta: "2026"
     text: Created slideshow of images
     media:
-      - {}
+      - file: img/IMG_3315.jpg
+        alt: "CRT TVs representing ship monitors "
+        caption: "CRT TVs representing ship monitors "
 ---
