@@ -81,7 +81,7 @@ sections:
       - file: img/IMG_3315.jpg
         alt: "CRT TVs representing ship monitors "
         caption: "CRT TVs representing ship monitors "
-      - video: mov/mouthwashing.mov
+      - video: mov/mouthwashing.mp4
         alt: Projections displayed on cluster of CRT TVs
         caption: Projections displayed on cluster of CRT TVs
 ---
