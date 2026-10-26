@@ -258,16 +258,65 @@ function initGallery(main) {
   ro.observe(g);
   addEventListener("resize", onResize, { signal: off.signal });
 
-  // tiles drift up and fade in as they scroll into view
-  if (calm() || !("IntersectionObserver" in window)) return;
+  if (calm()) return;
+  initMagnet(g, tiles, () => current.boxes, off.signal);
+
+  // tiles drift up and fade in as they scroll into view; once that's done ("settled") they
+  // respond to the cursor instead
+  if (!("IntersectionObserver" in window)) { tiles.forEach(t => t.classList.add("settled")); return; }
   g.classList.add("reveal");
   const io = new IntersectionObserver(entries => entries.forEach(e => {
     if (!e.isIntersecting) return;
     e.target.classList.add("in");
     io.unobserve(e.target);
-    setTimeout(() => e.target.classList.add("settled"), 1600); // reveal done: hover fades react immediately
+    setTimeout(() => e.target.classList.add("settled"), 1500);
   }), { rootMargin: "0px 0px -6% 0px" });
   tiles.forEach(t => io.observe(t));
+}
+
+/* Magnetic pull: every gallery image near the cursor leans a few pixels toward it, more the closer
+   the cursor is; images further away stay put. Offsets are eased every frame so the motion is
+   smooth, and use the separate `translate` property so they never disturb the layout transforms. */
+function initMagnet(g, tiles, boxesNow, signal) {
+  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  const reach = 220;  // px from an image's edge at which it starts to respond
+  const pull = 9;     // most it moves, in px
+  const offsets = new Map(tiles.map(t => [t, { x: 0, y: 0 }]));
+  let cursor = null, running = false;
+
+  const frame = () => {
+    if (!g.isConnected) { running = false; return; }
+    const gr = g.getBoundingClientRect(), boxes = boxesNow();
+    let moving = false;
+    for (const t of tiles) {
+      if (!t.classList.contains("settled")) continue; // still revealing
+      const b = boxes.get(t), o = offsets.get(t);
+      let tx = 0, ty = 0;
+      if (cursor && b) {
+        const left = gr.left + b.x, top = gr.top + b.y;
+        const cx = left + b.w / 2, cy = top + b.h / 2;
+        // distance from the cursor to the image's edge (0 when over it)
+        const ex = Math.max(left - cursor.x, 0, cursor.x - (left + b.w)), ey = Math.max(top - cursor.y, 0, cursor.y - (top + b.h));
+        const near = Math.max(0, 1 - Math.hypot(ex, ey) / reach);
+        if (near > 0) {
+          const vx = cursor.x - cx, vy = cursor.y - cy, len = Math.hypot(vx, vy) || 1;
+          // over the image itself the pull fades to nothing at its centre, so it never jitters
+          const fromCentre = Math.min(1, Math.hypot(vx / (b.w / 2), vy / (b.h / 2)));
+          const s = pull * near * near * (3 - 2 * near) * fromCentre; // smoothstep falloff
+          tx = (vx / len) * s; ty = (vy / len) * s;
+        }
+      }
+      o.x += (tx - o.x) * 0.12; o.y += (ty - o.y) * 0.12; // ease toward the target
+      if (Math.abs(o.x - tx) > 0.05 || Math.abs(o.y - ty) > 0.05) moving = true;
+      t.style.translate = `${o.x.toFixed(2)}px ${o.y.toFixed(2)}px`;
+    }
+    if (moving || cursor) requestAnimationFrame(frame); else running = false;
+  };
+  const wake = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
+
+  addEventListener("pointermove", e => { if (e.pointerType === "mouse") { cursor = { x: e.clientX, y: e.clientY }; wake(); } }, { passive: true, signal });
+  document.addEventListener("pointerleave", () => { cursor = null; wake(); }, { signal });
+  addEventListener("blur", () => { cursor = null; wake(); }, { signal });
 }
 
 // biggest file in an image's srcset (the page itself shows a smaller one); falls back to src
