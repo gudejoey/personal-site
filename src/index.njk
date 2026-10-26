@@ -8,12 +8,17 @@ nav: work
     <h1 class="hero-name">{{ site.name }}</h1>
     <p class="hero-tag">{{ site.tagline }}</p>
   </div>
-  {#- a photo of you, set in Site settings; until then a placeholder holds its place #}
+  {#- a photo of you as a polaroid, set in Site settings; until then a placeholder sits in the frame #}
   <figure class="hero-photo{% if not site.photo %} placeholder{% endif %}">
-    {%- if site.photo %}
-    <img src="{{ site.photo | asset }}" alt="{{ site.photo_alt or ('Photo of ' + site.name) }}" sizes="(max-width: 600px) 70vw, 30vw" loading="eager">
-    {%- else %}
-    <span class="mono muted">Photo of {{ site.name }}</span>
+    <div class="shot">
+      {%- if site.photo %}
+      <img src="{{ site.photo | asset }}" alt="{{ site.photo_alt or ('Photo of ' + site.name) }}" sizes="(max-width: 600px) 70vw, 30vw" loading="eager">
+      {%- else %}
+      <span class="mono">Photo of {{ site.name }}</span>
+      {%- endif %}
+    </div>
+    {%- if site.photo_caption %}
+    <figcaption>{{ site.photo_caption }}</figcaption>
     {%- endif %}
   </figure>
 </section>

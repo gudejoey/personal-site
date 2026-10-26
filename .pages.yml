@@ -215,6 +215,10 @@ content:
       - name: photo_alt
         label: Photo description (for screen readers)
         type: string
+      - name: photo_caption
+        label: Note on the polaroid
+        type: string
+        description: Optional handwritten-style line on the white strip under the photo, e.g. "Stanford, 2026".
       - name: email
         type: string
       - name: links
