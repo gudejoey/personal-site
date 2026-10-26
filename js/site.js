@@ -237,6 +237,9 @@ function initGallery(main) {
   g.classList.add("packed");
   let current = layout();
   apply(current);
+  // while the page is still settling (scrollbar appearing, fonts and images arriving) the width can
+  // shift a little; those re-packs snap into place instead of gliding, so nothing slides in on load
+  const settledAt = performance.now() + 1500;
 
   let queued = false, lastResize = 0;
   const off = new AbortController(); // stops listening once this page is swapped away
@@ -248,7 +251,7 @@ function initGallery(main) {
       queued = false;
       const next = layout();
       if (Math.abs(next.W - current.W) < 0.5) return;
-      const now = performance.now(), dragging = now - lastResize < 200;
+      const now = performance.now(), dragging = now - lastResize < 200 || now < settledAt;
       lastResize = now;
       current = next;
       if (dragging || calm()) apply(next); else glide(next);
