@@ -31,7 +31,7 @@ sections:
     meta: "2025"
     text: Created three sets of stair animations in Blender as backdrops.
     media:
-      - file: img/stage-wall-1.jpg
+      - file: img/stage-wall.jpg
         alt: Actors walking down projected stairs.
       - file: img/NormalStairs.png
         alt: 3D render of classic stairs
