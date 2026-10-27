@@ -64,9 +64,6 @@ sections:
     text: Worked as stage manager and designed ambient background representing the
       underworld.
     media:
-      - file: img/IMG_2124.jpg
-        alt: Stage set
-        caption: Set for Underworld scenes
       - video: mov/IMG_2126.mp4
         alt: Animated backdrop
         caption: Animated Underworld background
@@ -86,10 +83,10 @@ sections:
       allows the director to remotely control the projections from behind the
       stage. 
     media:
-      - file: img/IMG_3315.jpg
-        alt: "CRT TVs representing ship monitors "
-        caption: "The cluster of CRT TVs as ship monitors "
       - video: mov/mouthwashing.mp4
         alt: Projections displayed on cluster of CRT TVs
         caption: Projections displayed on cluster of CRT TVs
+      - file: img/IMG_3315.jpg
+        alt: "CRT TVs representing ship monitors "
+        caption: "The cluster of CRT TVs as ship monitors "
 ---
