@@ -190,7 +190,9 @@ function initGallery(main) {
   // work out every tile's box for the current width
   const layout = () => {
     const W = g.clientWidth, gap = parseFloat(getComputedStyle(g).rowGap) || 16;
-    const target = W < 600 ? 200 : W < 860 ? 230 : 260; // row height to aim for; kept generous on small screens so images stay a usable size
+    // row height to aim for: generous on small screens so images stay usable, and growing with the
+    // width on big screens (about a fifth of it, up to 420px) so images get larger there too
+    const target = W < 600 ? 200 : W < 860 ? 230 : Math.min(420, Math.max(260, W * 0.21));
     const boxes = new Map();
     let y = 0, row = [];
     const place = (list, h) => {
@@ -375,6 +377,9 @@ async function go(url, push) {
   if (!next) { location.href = url; return; }
   const swap = () => {
     $("main").replaceWith(document.adoptNode(next));
+    // videos built in the background document never started loading there (Safari won't retry on
+    // its own), so start them now that they're on the page
+    next.querySelectorAll("video").forEach(v => v.load());
     document.title = doc.title;
     const navNext = [...doc.querySelectorAll("nav.site a")].map(a => a.hasAttribute("aria-current"));
     document.querySelectorAll("nav.site a").forEach((a, i) => navNext[i] ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));

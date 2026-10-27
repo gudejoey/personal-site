@@ -35,7 +35,10 @@ a:hover, a:focus-visible, nav.site a[aria-current="page"] { background-size: 100
 img { display: block; max-width: 100%; }
 /* discourage saving: no dragging images out, no text-style selection, no iOS long-press menu (site.js blocks right-click) */
 img, video { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-.wrap { max-width: var(--wrap); margin: 0 auto; }
+/* the page is at least one screen tall and main takes up the slack, so on short pages the footer
+   sits at the bottom of the screen and the empty space falls above it */
+.wrap { max-width: var(--wrap); margin: 0 auto; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.wrap > main { flex: 1 0 auto; }
 .mono { font-family: var(--mono); font-size: var(--s-1); letter-spacing: 0.02em; }
 .muted { color: var(--graphite); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
@@ -115,7 +118,7 @@ nav.site a { font-family: var(--mono); font-size: 0.8125rem; padding-bottom: 2px
 
 /* Gallery: justified rows. Each tile has --r (width ÷ height). Without JS, flex-grow in proportion
    to --r gives rows of equal height; site.js then packs rows exactly (class "packed"). */
-.gallery { --row: 240px; display: flex; flex-wrap: wrap; gap: var(--s0); }
+.gallery { --row: clamp(240px, 17vw, 400px); display: flex; flex-wrap: wrap; gap: var(--s0); }
 .gallery::after { content: ""; flex: 999 1 0; } /* keeps the last row from stretching */
 .gallery .tile { all: unset; position: relative; display: block; overflow: hidden; cursor: pointer; background: var(--mat);
   flex: var(--r) 1 calc(var(--r) * var(--row)); aspect-ratio: var(--r); }

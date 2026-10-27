@@ -87,7 +87,6 @@ sections:
       stage. 
     media:
       - file: img/IMG_3315.jpg
-        video: mov/mouthwashing.mp4
         alt: "CRT TVs representing ship monitors "
         caption: "The cluster of CRT TVs as ship monitors "
       - video: mov/mouthwashing.mp4
