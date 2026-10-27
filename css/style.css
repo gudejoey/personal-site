@@ -245,12 +245,12 @@ figcaption { font-family: var(--mono); font-size: var(--s-1); color: var(--graph
 .portrait .arrow { flex: none; width: 52px; height: auto; fill: none; stroke: var(--graphite); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; margin-top: 10px; }
 
 /* landing hero: name and tagline vertically centred on the left, a photo on the right */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(2rem, 5vw, 5rem);
+.hero { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: center; gap: clamp(2.5rem, 7vw, 7rem);
   min-height: clamp(440px, 72vh, 820px); padding-block: clamp(2rem, 6vh, 4rem);
   padding-inline: clamp(0px, 10vw, 220px); /* extra side margin pulls the name and photo in toward the centre */ }
 main > .hero > :first-child { margin-top: 0; }
-.hero-name { margin: 0; font: italic 300 clamp(3rem, 7vw, 6.25rem)/.9 "Cormorant Garamond", var(--serif); letter-spacing: -0.035em; }
-.hero-tag { margin: clamp(1.25rem, 3.2vh, 2.25rem) 0 0; font: 400 clamp(.9375rem, 1.05vw, 1.0625rem)/1.4 var(--sans); letter-spacing: -0.005em; color: var(--graphite); } /* no width limit: one line wherever it fits */
+.hero-name { margin: 0; font: italic 300 clamp(2.8rem, 6vw, 5.25rem)/.9 "Cormorant Garamond", var(--serif); letter-spacing: -0.035em; }
+.hero-tag { margin: clamp(1.6rem, 4vh, 2.75rem) 0 0; font: 400 clamp(.9375rem, 1.05vw, 1.0625rem)/1.4 var(--sans); letter-spacing: -0.005em; color: var(--graphite); } /* no width limit: one line wherever it fits */
 /* the hero photo is a polaroid, proportioned like real Polaroid 600 / i-Type film: an 88 x 107 mm card
    with a 79 mm square photo, 4.5 mm side borders, a 6.4 mm top and a 21.6 mm bottom strip. Everything
    is a fraction of the card width (--pw). Tilted slightly; straightens a touch on hover. */
@@ -297,7 +297,7 @@ dialog.closing::backdrop, dialog.closing .cap { animation: fade-out .3s ease bot
   .timeline { grid-template-columns: minmax(0, 1fr); }
   .rail { display: none; }
   .mark svg { height: 1.9rem; }
-  .hero { grid-template-columns: minmax(0, 1fr); align-content: center; gap: var(--s2); min-height: 0; padding-inline: 0; }
+  .hero { grid-template-columns: minmax(0, 1fr); justify-content: stretch; align-content: center; gap: var(--s2); min-height: 0; padding-inline: 0; }
   .hero-photo { --pw: min(66vw, 260px); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
