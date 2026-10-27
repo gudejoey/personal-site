@@ -64,7 +64,12 @@ sections:
     text: Worked as stage manager and designed ambient background representing the
       underworld.
     media:
-      - {}
+      - file: img/IMG_2124.jpg
+        alt: Stage set
+        caption: Set for Underworld scenes
+      - video: mov/IMG_2126.mp4
+        alt: Animated backdrop
+        caption: Animated Underworld background
   - label: Show
     title: Fatherland
     meta: "2026"
